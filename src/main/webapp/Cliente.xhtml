@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<style type="text/css">
+/** Demo **/
+.ui-outputlabel {
+	font-weight: bold;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}
+</style>
+
+		<h1 class="aw-page-title-modulos">#{msg.gerenciametoCliente}</h1>
+		<p:separator />
+		<p:tabView>
+			<p:tab title="#{msg.cadastrarCliente}">
+				<h:form>
+
+					<p:growl id="growl" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4," layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="nomeCliente" value="#{msg.nomeCliente}:" />
+							<p:inputText id="nomeCliente" required="true"
+								value="#{clienteBean.cliente.nome}"
+								requiredMessage="#{msg.campo} #{msg.nomeCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="rgCliente" value="#{msg.rgCliente}:" />
+							<p:inputText id="rgCliente" required="true"
+								value="#{clienteBean.cliente.rg}"
+								requiredMessage="#{msg.campo} #{msg.rgCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="cpfCliente" value="#{msg.cpfCliente}:" />
+							<p:inputMask id="cpfCliente" required="true"
+								value="#{clienteBean.cliente.cpf}" mask="999.999.999-99"
+								requiredMessage="#{msg.campo} #{msg.cpfCliente} #{msg.obrigatorio}.">
+								<f:validator validatorId="custom.validadorCpf" />
+							</p:inputMask>
+							<p:outputLabel for="endCliente" value="#{msg.enderecoCliente}:" />
+							<p:inputText id="endCliente" required="true"
+								value="#{clienteBean.cliente.endereco}"
+								requiredMessage="#{msg.campo} #{msg.enderecoCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="numEndCliente" value="#{msg.numEndereco}:" />
+							<p:inputText id="numEndCliente" required="true" size="6"
+								value="#{clienteBean.cliente.numero}" maxlength="6"
+								onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+								requiredMessage="#{msg.campo} #{msg.numEndereco} #{msg.obrigatorio}." />
+							<p:outputLabel for="estadoCliente" value="#{msg.estadoCliente}:" />
+							<p:selectOneMenu id="estadoCliente" required="true"
+								value="#{clienteBean.cliente.estado}"
+								requiredMessage="#{msg.campo} #{msg.estadoCliente} #{msg.obrigatorio}.">
+								<f:selectItem itemLabel="#{msg.selecione}" itemValue="" />
+								<f:selectItems value="#{clienteBean.listaEstados}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="cidadeCliente" value="#{msg.cidadeCliente}:" />
+							<p:inputText id="cidadeCliente" required="true"
+								value="#{clienteBean.cliente.cidade}"
+								requiredMessage="#{msg.campo} #{msg.cidadeCliente} #{msg.obrigatorio}." />
+						</p:panelGrid>
+						<br></br>
+						<p:commandButton value="#{msg.cadastrarCliente}" id="ajax"
+							update="@form" action="#{clienteBean.cadastrarClienter}"
+							styleClass="ui-priority-primary" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msg.manterCliente}">
+				<h:form>
+					<p:dataTable var="listaClientes" widgetVar="tabelaClientes"
+						id="tabelaClientes" rows="10" paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15" value="#{clienteBean.listaClientes}"
+						emptyMessage="#{msg.semRegistros}">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="#{msg.pesquisePorCampos}: " />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tabelaClientes').filter()" style="width:200px"
+									filteredValue="#{clienteBean.clientesFiltrados}"
+									placeholder="#{msg.insiraPalavraChave}" />
+							</p:outputPanel>
+						</f:facet>
+
+						<p:column filterBy="#{listaClientes.nome}"
+							filterStyle="display:none" headerText="#{msg.nomeCliente}">
+							<h:outputText value="#{listaClientes.nome}" />
+						</p:column>
+						<p:column headerText="#{msg.rgCliente}"
+							filterBy="#{listaClientes.rg}" filterStyle="display:none">
+							<h:outputText value="#{listaClientes.rg}" />
+						</p:column>
+						<p:column headerText="#{msg.cpfCliente}"
+							filterBy="#{listaClientes.cpf}" filterStyle="display:none">
+							<h:outputText value="#{listaClientes.cpf}" />
+						</p:column>
+						<p:column headerText="#{msg.enderecoCliente}"
+							filterBy="#{listaClientes.endereco}" filterStyle="display:none">
+							<h:outputText
+								value="#{listaClientes.endereco}, #{listaClientes.numero}" />
+						</p:column>
+						<p:column headerText="#{msg.cidadeCliente}"
+							filterBy="#{listaClientes.cidade}" filterStyle="display:none">
+							<h:outputText value="#{listaClientes.cidade}" />
+						</p:column>
+
+						<f:facet name="paginatorTopLeft">
+							<p:commandButton type="button" icon="pi pi-refresh"
+								onclick="PF('tabelaClientes').filter()" />
+						</f:facet>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+
+</ui:composition>

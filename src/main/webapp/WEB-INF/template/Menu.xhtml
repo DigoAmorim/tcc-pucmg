@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	<nav class="aw-menu">
+		<ul>
+			<li><i class="fa  fa-fw  fa-home menu-lbl">Menu</i></li>
+			<li id="li-menu-cliente"><h:link outcome="Cliente">
+					<i class="fa  fa-fw  fa-user"> <f:param name="tela"
+							value="li-menu-cliente" /></i>Cliente</h:link></li>
+			<li id="li-menu-instrutor"><h:link>
+					<i class="fa  fa-fw  fa-user"> <f:param name="tela"
+							value="li-menu-instrutor" /></i>Instrutores</h:link></li>
+			<li id="li-menu-relatorio"><h:link>
+					<i class="fa  fa-fw  fa-user"><f:param name="tela"
+							value="li-menu-relatorio" /></i>Relatórios</h:link></li>
+		</ul>
+	</nav>
+
+</ui:composition>
