@@ -1,6 +1,8 @@
 package br.com.tcc.puc.service;
 
 import java.util.ArrayList;
+
+import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.model.Pessoa;
 
 
@@ -19,7 +21,7 @@ public interface IPessoaService {
 	
 	Pessoa obter(Object id);
 	
-	ArrayList<Pessoa> obterTodos();
+	ArrayList<Cliente> obterTodos();
 	
 	ArrayList<Pessoa> obterPessoas(Pessoa pessoa);
 

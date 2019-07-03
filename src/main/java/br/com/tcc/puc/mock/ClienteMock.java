@@ -1,35 +1,73 @@
 package br.com.tcc.puc.mock;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.model.Pessoa;
 
-
 /**
  * @author Rodrigo
  *
- * Classe que simulará o acesso ao BD para testar as funcionalidades CRUD de Cliente.
+ *         Classe que simulará o acesso ao BD para testar as funcionalidades
+ *         CRUD de Cliente.
  * 
  */
 public class ClienteMock {
-	
-	private ArrayList<Pessoa> clientes = null;
-	
+
+	private ArrayList<Cliente> clientes = null;
+
 	public ClienteMock() {
-		clientes = new ArrayList<Pessoa>();
+		clientes = new ArrayList<Cliente>();
 		popularClientes();
-		
+
+	}
+
+	public ArrayList<Cliente> getClientes() {
+		return clientes;
+	}
+
+	public Cliente obterCliente(String cpf) {
+		Cliente clienteObj = null;
+		for (Iterator<Cliente> iterator = clientes.iterator(); iterator.hasNext();) {
+			clienteObj = iterator.next();
+			if(clienteObj.getCpf().equals(cpf)) {
+				return clienteObj;
+			}
+		}
+		return null;
 	}
 	
-	public ArrayList<Pessoa> getClientes() {
-		return clientes;
+	public void excluirCliente(Cliente clienteModificado) {
+		Cliente clienteObj = null;
+		for (Iterator<Cliente> iterator = clientes.iterator(); iterator.hasNext();) {
+			clienteObj = iterator.next();
+			if(clienteObj.getCpf().equals(clienteModificado.getCpf())) {
+				iterator.remove();
+			}
+		}
+	}
+	
+	public boolean alterarCliente(Cliente clienteModificado) {
+		Cliente clienteObj;
+		for (Iterator<Cliente> iterator = clientes.iterator(); iterator.hasNext();) {
+			clienteObj = iterator.next();
+			if(clienteObj.getCpf().equals(clienteModificado.getCpf())) {
+				clienteObj.setCidade(clienteModificado.getCidade());
+				clienteObj.setEndereco(clienteModificado.getEndereco());
+				clienteObj.setEstado(clienteModificado.getEstado());
+				clienteObj.setNome(clienteModificado.getNome());
+				clienteObj.setRg(clienteModificado.getRg());
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void setClientes(Cliente clientesParam) {
 		clientes.add(clientesParam);
 	}
-	
+
 	private void popularClientes() {
 		Cliente c = new Cliente();
 		c.setNome("Rodrigo Amorim");
@@ -55,9 +93,7 @@ public class ClienteMock {
 		c.setRg("332.001.55-70");
 		c.setCidade("Porto Alegre");
 		clientes.add(c);
-		
+
 	}
-	
-	
 
 }

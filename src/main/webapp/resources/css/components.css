@@ -70,3 +70,13 @@
 .ui-datatable .ui-datatable-header {
         text-align: right !important;
     }
+    
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.button-excluir {
+	background-color: #ef6563;
+	border-color: #ef6563;
+}    
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-icon-left.button-excluir:hover {
+	background-color: #d85b59;
+	border-color: #d85b59;
+}

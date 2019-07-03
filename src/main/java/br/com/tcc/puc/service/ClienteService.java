@@ -12,15 +12,15 @@ import br.com.tcc.puc.model.Pessoa;
 /**
  * @author Rodrigo
  *
- * Classe que implementará os serviços para manipulação dos clientes. 
+ *         Classe que implementará os serviços para manipulação dos clientes.
  *
  */
 public class ClienteService implements IPessoaService {
 
 	static final String ACESSO_DADOS = "MOCK";
-	
+
 	private ClienteMock clienteMock = new ClienteMock();
-	
+
 	public void criar(Cliente cliente) {
 		if (ACESSO_DADOS.equals("MOCK")) {
 			clienteMock.setClientes(cliente);
@@ -28,21 +28,19 @@ public class ClienteService implements IPessoaService {
 	}
 
 	public void editar(Cliente cliente) {
-		// TODO Auto-generated method stub
-
+		if (ACESSO_DADOS.equals("MOCK")) {
+			clienteMock.alterarCliente(cliente);
+		}
 	}
 
-	public void remover(Cliente cliente) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public Pessoa obter(Object id) {
-		// TODO Auto-generated method stub
+	public Cliente obter(Object cpf) {
+		if (ACESSO_DADOS.equals("MOCK")) {
+			return clienteMock.obterCliente(cpf.toString());
+		}
 		return null;
 	}
 
-	public ArrayList<Pessoa> obterTodos() {
+	public ArrayList<Cliente> obterTodos() {
 		if (ACESSO_DADOS.equals("MOCK")) {
 			return clienteMock.getClientes();
 		}
@@ -51,17 +49,22 @@ public class ClienteService implements IPessoaService {
 
 	public void criar(Pessoa pessoa) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void editar(Pessoa pessoa) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void remover(Pessoa pessoa) {
 		// TODO Auto-generated method stub
-		
+	}
+
+	public void remover(Cliente cliente) {
+		if (ACESSO_DADOS.equals("MOCK")) {
+			clienteMock.excluirCliente(cliente);
+		}
 	}
 
 	public ArrayList obterPessoas(Pessoa pessoa) {
