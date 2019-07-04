@@ -2,7 +2,8 @@ package br.com.tcc.puc.service;
 
 import java.util.List;
 import javax.faces.model.SelectItem;
-import br.com.tcc.puc.mock.UtilMock;
+
+import br.com.tcc.puc.dao.UtilMock;
 
 /**
  * @author Rodrigo

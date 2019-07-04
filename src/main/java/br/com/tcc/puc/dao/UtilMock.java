@@ -1,19 +1,23 @@
-package br.com.tcc.puc.mock;
+package br.com.tcc.puc.dao;
 
 import java.util.ArrayList;
-import java.util.List;
 import javax.faces.model.SelectItem;
+
+/**
+ * TODO: Modificar essa classe incluindo uma entidade chamada Estado, contendo dois parâmetros e modificar essa implementação
+ * para que ela implemente Dao<Estado>.
+ */
 
 /**
  * @author Rodrigo
  *
- *         Classe que simulará o acesso ao BD para testar as que são úteis na
+ *         Classe que simula o acesso ao BD para testar as funcionalidade que são úteis na
  *         aplicação.
  * 
  */
 public class UtilMock {
 
-	private List<SelectItem> listaEstados = null;
+	private ArrayList<SelectItem> listaEstados = null;
 
 	public UtilMock() {
 		listaEstados = new ArrayList<SelectItem>();
@@ -51,11 +55,11 @@ public class UtilMock {
 		listaEstados.add(new SelectItem("TO", "Tocantins"));
 	}
 
-	public List<SelectItem> getListaEstados() {
+	public ArrayList<SelectItem> getListaEstados() {
 		return listaEstados;
 	}
 
-	public void setListaEstados(List<SelectItem> listaEstados) {
+	public void setListaEstados(ArrayList<SelectItem> listaEstados) {
 		this.listaEstados = listaEstados;
 	}
 	

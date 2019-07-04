@@ -80,3 +80,11 @@
 	background-color: #d85b59;
 	border-color: #d85b59;
 }
+
+.ui-outputlabel {
+	font-weight: bold;
+}
+
+.ui-orderlist .ui-orderlist-list {
+	height: auto;
+}

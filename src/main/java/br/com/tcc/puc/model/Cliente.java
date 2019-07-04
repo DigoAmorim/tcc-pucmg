@@ -2,12 +2,10 @@ package br.com.tcc.puc.model;
 
 import java.io.Serializable;
 
-
 /**
+ * Essa classe representará o cliente que será armazenado em nossa aplicação. Ele herda os campos de Pessoa.
  * @author Rodrigo
- * 
- *  Essa classe representará o cliente que será armazenado em nossa aplicação. Ele herda os campos de Pessoa.
- *
+ *  
  */
 public class Cliente extends Pessoa implements Serializable  {
 

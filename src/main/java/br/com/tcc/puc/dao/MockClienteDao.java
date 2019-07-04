@@ -1,44 +1,52 @@
-package br.com.tcc.puc.mock;
+package br.com.tcc.puc.dao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import br.com.tcc.puc.model.Cliente;
-import br.com.tcc.puc.model.Pessoa;
 
 /**
  * @author Rodrigo
  *
- *         Classe que simulará o acesso ao BD para testar as funcionalidades
+ *         Classe que simula o acesso ao BD para testar as funcionalidades
  *         CRUD de Cliente.
  * 
  */
-public class ClienteMock {
+public class MockClienteDao implements Dao<Cliente> {
 
 	private ArrayList<Cliente> clientes = null;
 
-	public ClienteMock() {
+	public MockClienteDao() {
 		clientes = new ArrayList<Cliente>();
 		popularClientes();
 
 	}
 
-	public ArrayList<Cliente> getClientes() {
+	/**
+	 * Método que retorna a retorna todos os clientes da lista.
+	 */
+	public ArrayList<Cliente> obterTodos() {
 		return clientes;
 	}
 
-	public Cliente obterCliente(String cpf) {
+	/**
+	 * Método que recupera da lista um cliente passado como parâmetro de busca.
+	 */
+	public Cliente obterObjeto(Cliente cli) {
 		Cliente clienteObj = null;
 		for (Iterator<Cliente> iterator = clientes.iterator(); iterator.hasNext();) {
 			clienteObj = iterator.next();
-			if(clienteObj.getCpf().equals(cpf)) {
+			if(clienteObj.getCpf().equals(cli.getCpf())) {
 				return clienteObj;
 			}
 		}
 		return null;
 	}
 	
-	public void excluirCliente(Cliente clienteModificado) {
+	/**
+	 * Método que exclui da lista um cliente passado como parâmetro.
+	 */
+	public void excluirObjeto(Cliente clienteModificado) {
 		Cliente clienteObj = null;
 		for (Iterator<Cliente> iterator = clientes.iterator(); iterator.hasNext();) {
 			clienteObj = iterator.next();
@@ -48,7 +56,10 @@ public class ClienteMock {
 		}
 	}
 	
-	public boolean alterarCliente(Cliente clienteModificado) {
+	/**
+	 * Método que altera um cliente passado como parâmetro.  
+	 */
+	public void alterarObjeto(Cliente clienteModificado) {
 		Cliente clienteObj;
 		for (Iterator<Cliente> iterator = clientes.iterator(); iterator.hasNext();) {
 			clienteObj = iterator.next();
@@ -58,16 +69,20 @@ public class ClienteMock {
 				clienteObj.setEstado(clienteModificado.getEstado());
 				clienteObj.setNome(clienteModificado.getNome());
 				clienteObj.setRg(clienteModificado.getRg());
-				return true;
 			}
 		}
-		return false;
 	}
 
-	public void setClientes(Cliente clientesParam) {
+	/**
+	 * Método que adicionar um cliente passado como parâmetro a uma lista de clientes.
+	 */
+	public void adicionarObjeto(Cliente clientesParam) {
 		clientes.add(clientesParam);
 	}
 
+	/**
+	 * Método que popula a lista com clientes. 
+	 */
 	private void popularClientes() {
 		Cliente c = new Cliente();
 		c.setNome("Rodrigo Amorim");

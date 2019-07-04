@@ -7,17 +7,6 @@
 
 	<ui:define name="content">
 
-		<style type="text/css">
-/** Demo **/
-.ui-outputlabel {
-	font-weight: bold;
-}
-
-.ui-orderlist .ui-orderlist-list {
-	height: auto;
-}
-</style>
-
 		<h1 class="aw-page-title-modulos">#{msg.gerenciametoCliente}</h1>
 		<p:separator />
 		<p:tabView>
@@ -72,7 +61,97 @@
 					</div>
 				</h:form>
 			</p:tab>
-			<p:tab title="#{msg.manterCliente}">
+			<p:tab title="#{msg.alterarCliente}">
+				<h:form>
+
+					<p:growl id="growl2" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="3"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="cpfCliente" value="#{msg.cpfCliente}:" />
+							<p:inputMask id="cpfCliente" required="true"
+								value="#{clienteBean.filtroClienteCpf}" mask="999.999.999-99"
+								requiredMessage="#{msg.campo} #{msg.cpfCliente} #{msg.obrigatorio}.">
+							</p:inputMask>
+							<p:commandButton icon="pi pi-search"
+								update="@([id$=formAlterarCliente])"
+								action="#{clienteBean.obterClientePorCpf}"
+								value="#{msg.pesquisar}" />
+						</p:panelGrid>
+					</div>
+				</h:form>
+				<p:separator />
+				<h:form id="formAlterarCliente">
+
+					<p:growl id="growl3" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4," layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="nomeCliente2" value="#{msg.nomeCliente}:" />
+							<p:inputText id="nomeCliente2" required="true"
+								value="#{clienteBean.cliente.nome}"
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
+								requiredMessage="#{msg.campo} #{msg.nomeCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="rgCliente2" value="#{msg.rgCliente}:" />
+							<p:inputText id="rgCliente2" required="true"
+								value="#{clienteBean.cliente.rg}"
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
+								requiredMessage="#{msg.campo} #{msg.rgCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="cpfCliente2" value="#{msg.cpfCliente}:" />
+							<p:inputMask id="cpfCliente2" required="true" disabled="true"
+								value="#{clienteBean.cliente.cpf}" mask="999.999.999-99"
+								requiredMessage="#{msg.campo} #{msg.cpfCliente} #{msg.obrigatorio}.">
+								<f:validator validatorId="custom.validadorCpf" />
+							</p:inputMask>
+							<p:outputLabel for="endCliente2" value="#{msg.enderecoCliente}:" />
+							<p:inputText id="endCliente2" required="true"
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
+								value="#{clienteBean.cliente.endereco}"
+								requiredMessage="#{msg.campo} #{msg.enderecoCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="numEndCliente2" value="#{msg.numEndereco}:" />
+							<p:inputText id="numEndCliente2" required="true" size="6"
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
+								value="#{clienteBean.cliente.numero}" maxlength="6"
+								onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
+								requiredMessage="#{msg.campo} #{msg.numEndereco} #{msg.obrigatorio}." />
+							<p:outputLabel for="cidadeCliente2" value="#{msg.cidadeCliente}:" />
+							<p:inputText id="cidadeCliente2" required="true"
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
+								value="#{clienteBean.cliente.cidade}"
+								requiredMessage="#{msg.campo} #{msg.cidadeCliente} #{msg.obrigatorio}." />
+						</p:panelGrid>
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-6 ui-md-6,ui-g-6 ui-md-6" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:commandButton value="#{msg.altearCliente}" update="@form"
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
+								action="#{clienteBean.alterarCliente}"
+								styleClass="ui-priority-primary" icon="pi pi-save" />
+							<p:commandButton value="#{msg.excluirCliente}" update="@form"
+								styleClass="button-excluir" icon="pi pi-trash"
+								action="#{clienteBean.excluirCliente}"
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}">
+								<p:confirm header="#{msg.confirmacao}" message="#{msg.temCerteza}"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+
+							<p:confirmDialog global="true" showEffect="fade" responsive="true"
+								hideEffect="fade" >
+								<p:commandButton value="#{msg.sim}" type="button"
+									styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+								<p:commandButton value="#{msg.nao}" type="button"
+									styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+							</p:confirmDialog>
+
+						</p:panelGrid>
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msg.listarCliente}">
 				<h:form>
 					<p:dataTable var="listaClientes" widgetVar="tabelaClientes"
 						id="tabelaClientes" rows="10" paginator="true"
@@ -117,85 +196,6 @@
 								onclick="PF('tabelaClientes').filter()" />
 						</f:facet>
 					</p:dataTable>
-				</h:form>
-			</p:tab>
-			<p:tab title="#{msg.alterarCliente}">
-				<h:form>
-
-					<p:growl id="growl2" life="5000" />
-
-					<div class="ui-fluid">
-						<p:panelGrid columns="3"
-							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-4"
-							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
-							<p:outputLabel for="cpfCliente" value="#{msg.cpfCliente}:" />
-							<p:inputMask id="cpfCliente" required="true"
-								value="#{clienteBean.filtroClienteCpf}" mask="999.999.999-99"
-								requiredMessage="#{msg.campo} #{msg.cpfCliente} #{msg.obrigatorio}.">
-							</p:inputMask>
-							<p:commandButton icon="pi pi-search"
-								update="@([id$=formAlterarCliente])"
-								action="#{clienteBean.obterClientePorCpf}"
-								value="#{msg.pesquisar}" />
-						</p:panelGrid>
-					</div>
-				</h:form>
-				<p:separator />
-				<h:form id="formAlterarCliente">
-
-					<p:growl id="growl3" life="5000" />
-
-					<div class="ui-fluid">
-						<p:panelGrid columns="2"
-							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4," layout="grid"
-							styleClass="ui-panelgrid-blank ui-fluid">
-							<p:outputLabel for="nomeCliente2" value="#{msg.nomeCliente}:" />
-							<p:inputText id="nomeCliente2" required="true"
-								value="#{clienteBean.cliente.nome}"
-								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
-								requiredMessage="#{msg.campo} #{msg.nomeCliente} #{msg.obrigatorio}." />
-							<p:outputLabel for="rgCliente2" value="#{msg.rgCliente}:" />
-							<p:inputText id="rgCliente2" required="true"
-								value="#{clienteBean.cliente.rg}"
-								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
-								requiredMessage="#{msg.campo} #{msg.rgCliente} #{msg.obrigatorio}." />
-							<p:outputLabel for="cpfCliente2" value="#{msg.cpfCliente}:" />
-							<p:inputMask id="cpfCliente2" required="true"
-								disabled="true"
-								value="#{clienteBean.cliente.cpf}" mask="999.999.999-99"
-								requiredMessage="#{msg.campo} #{msg.cpfCliente} #{msg.obrigatorio}.">
-								<f:validator validatorId="custom.validadorCpf" />
-							</p:inputMask>
-							<p:outputLabel for="endCliente2" value="#{msg.enderecoCliente}:" />
-							<p:inputText id="endCliente2" required="true"
-								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
-								value="#{clienteBean.cliente.endereco}"
-								requiredMessage="#{msg.campo} #{msg.enderecoCliente} #{msg.obrigatorio}." />
-							<p:outputLabel for="numEndCliente2" value="#{msg.numEndereco}:" />
-							<p:inputText id="numEndCliente2" required="true" size="6"
-								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
-								value="#{clienteBean.cliente.numero}" maxlength="6"
-								onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"
-								requiredMessage="#{msg.campo} #{msg.numEndereco} #{msg.obrigatorio}." />
-							<p:outputLabel for="cidadeCliente2" value="#{msg.cidadeCliente}:" />
-							<p:inputText id="cidadeCliente2" required="true"
-								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
-								value="#{clienteBean.cliente.cidade}"
-								requiredMessage="#{msg.campo} #{msg.cidadeCliente} #{msg.obrigatorio}." />
-						</p:panelGrid>
-						<p:panelGrid columns="2"
-							columnClasses="ui-g-6 ui-md-6,ui-g-6 ui-md-6" layout="grid"
-							styleClass="ui-panelgrid-blank ui-fluid">
-							<p:commandButton value="#{msg.altearCliente}" update="@form" 
-								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
-								action="#{clienteBean.alterarCliente}"
-								styleClass="ui-priority-primary" icon="pi pi-save" />
-							<p:commandButton value="#{msg.excluirCliente}" update="@form"
-								styleClass="button-excluir" icon="pi pi-trash"
-								action="#{clienteBean.excluirCliente}"
-								disabled="#{clienteBean.desabiltarCamposAlterarCliente}" />
-						</p:panelGrid>
-					</div>
 				</h:form>
 			</p:tab>
 		</p:tabView>

@@ -2,36 +2,33 @@ package br.com.tcc.puc.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.component.tabview.TabView;
-
 import br.com.tcc.puc.model.Cliente;
-import br.com.tcc.puc.model.Pessoa;
 import br.com.tcc.puc.service.ClienteService;
 import br.com.tcc.puc.service.UtilidadeService;
 import br.com.tcc.puc.util.Utilidade;
 
 @ManagedBean
 @SessionScoped
+/**
+ * Bean responsável pelo controle das telas de manipulação dos clientes.
+ * @author Rodrigo
+ *
+ */
 public class ClienteBean {
 
 	private Cliente cliente = null;
-
 	private String filtroClienteCpf = null;
-	
+	private ArrayList<Cliente> clientesFiltrados = new ArrayList<Cliente>();
 	private boolean desabiltarCamposAlterarCliente = true;
 
-	private ArrayList<Cliente> clientesFiltrados = new ArrayList<Cliente>();
-
 	private ClienteService clienteService = null;
-
 	private UtilidadeService utilService = null;
 
 	public ClienteBean() {
@@ -39,14 +36,17 @@ public class ClienteBean {
 		setDesabiltarCamposAlterarCliente(true);
 	}
 
+	/**
+	 * Método acionado no momento em que o usuário grava a criação de um cliente
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 */
 	public String cadastrarCliente() {
 		instanciarClienteService();
 		try {
 			clienteService.criar(cliente);
-			retornarMensagem(Utilidade.getMessage("clienteCadastradoSucesso", null), FacesMessage.SEVERITY_INFO);
-			clienteService.obterTodos();
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteCadastradoSucesso", null), FacesMessage.SEVERITY_INFO);
 		} catch (Exception e) {
-			System.out.println("Deu erro");
+			System.out.println("Erro precisa ser tratado");
 		} finally {
 			limparCliente();
 			setDesabiltarCamposAlterarCliente(true);
@@ -54,13 +54,17 @@ public class ClienteBean {
 		return "Cliente";
 	}
 	
+	/**
+	 * Método acionado no momento em que o usuário altera qualquer informação de um cliente
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 */
 	public String alterarCliente() {
 		instanciarClienteService();
 		try {
 			clienteService.editar(cliente);
-			retornarMensagem(Utilidade.getMessage("clienteAlteradoSucesso", null), FacesMessage.SEVERITY_INFO);
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteAlteradoSucesso", null), FacesMessage.SEVERITY_INFO);
 		} catch (Exception e) {
-			System.out.println("Deu erro");
+			System.out.println("Erro precisa ser tratado");
 		} finally {
 			limparCliente();
 			setDesabiltarCamposAlterarCliente(true);
@@ -68,11 +72,15 @@ public class ClienteBean {
 		return "Cliente";
 	}
 	
+	/**
+	 * Método acionado no momento em que o usuário remove um cliente
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 */
 	public String excluirCliente() {
 		instanciarClienteService();
 		try {
 			clienteService.remover(cliente);
-			retornarMensagem(Utilidade.getMessage("clienteExcluidoSucesso", null), FacesMessage.SEVERITY_INFO);
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteExcluidoSucesso", null), FacesMessage.SEVERITY_INFO);
 		} catch (Exception e) {
 			System.out.println("Deu erro");
 		} finally {
@@ -82,15 +90,18 @@ public class ClienteBean {
 		return "Cliente";
 	}
 
+	/**
+	 * Na tela de alteração, uma das funcionalidade é obter o cliente pelo identificador, que no caso é o CPF.
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 */
 	public String obterClientePorCpf() {
-		setDesabiltarCamposAlterarCliente(true);
+		Cliente Cliparam = new Cliente();
+		Cliparam.setCpf(filtroClienteCpf);
 		instanciarClienteService();
-		cliente = clienteService.obter(filtroClienteCpf);
-		/**
-		 * TODO: Verificar depois uma maneira para melhor testar a nulidade.
-		 */
-		if (cliente == null) {
-			retornarMensagem(Utilidade.getMessage("clienteNaoEncontrado", null), FacesMessage.SEVERITY_WARN);
+		setDesabiltarCamposAlterarCliente(true);
+		cliente = clienteService.obter(Cliparam);
+		if (Objects.isNull(cliente)) {
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteNaoEncontrado", null), FacesMessage.SEVERITY_WARN);
 		} else {
 			setFiltroClienteCpf("");
 			setDesabiltarCamposAlterarCliente(false);
@@ -118,7 +129,7 @@ public class ClienteBean {
 	 */
 	private void instanciarClienteService() {
 		if (clienteService == null) {
-			clienteService = new ClienteService();
+			clienteService = new ClienteService("MOCK");
 		}
 	}
 
@@ -132,28 +143,10 @@ public class ClienteBean {
 	}
 
 	/**
-	 * Méotodo que adiciona mensagens de retorno ao view.
-	 * 
-	 * @param mensagem:   Texto da mensagem
-	 * @param severidade: Tipo da severidade
-	 */
-	private void retornarMensagem(String mensagem, Severity severidade) {
-		FacesContext contexto = FacesContext.getCurrentInstance();
-		if (severidade.equals(FacesMessage.SEVERITY_INFO)) {
-			contexto.addMessage(null, new FacesMessage(severidade, mensagem, ""));
-		} else if (severidade.equals(FacesMessage.SEVERITY_WARN)) {
-			contexto.addMessage(null, new FacesMessage(severidade, mensagem, ""));
-		} else {
-			contexto.addMessage(null, new FacesMessage(severidade, mensagem, ""));
-		}
-	}
-
-	/**
 	 * 
 	 * Métodos Getters and Setters
 	 * 
 	 */
-
 	public ArrayList<Cliente> getListaClientes() {
 		instanciarClienteService();
 		return clienteService.obterTodos();

@@ -5,71 +5,46 @@ package br.com.tcc.puc.service;
 
 import java.util.ArrayList;
 
-import br.com.tcc.puc.mock.ClienteMock;
+import br.com.tcc.puc.dao.Dao;
+import br.com.tcc.puc.dao.MockClienteDao;
 import br.com.tcc.puc.model.Cliente;
-import br.com.tcc.puc.model.Pessoa;
 
 /**
  * @author Rodrigo
  *
  *         Classe que implementará os serviços para manipulação dos clientes.
+ *         As regras de negócio ficarão nessa classe.
  *
  */
-public class ClienteService implements IPessoaService {
+public class ClienteService {
 
 	static final String ACESSO_DADOS = "MOCK";
 
-	private ClienteMock clienteMock = new ClienteMock();
+	private Dao<Cliente> clienteDao;
+	
+	public ClienteService(String tipoAcesso) {
+		if (tipoAcesso.equals(ACESSO_DADOS)) {
+			clienteDao = new MockClienteDao();
+		}
+	}
 
 	public void criar(Cliente cliente) {
-		if (ACESSO_DADOS.equals("MOCK")) {
-			clienteMock.setClientes(cliente);
-		}
+		clienteDao.adicionarObjeto(cliente);
 	}
 
 	public void editar(Cliente cliente) {
-		if (ACESSO_DADOS.equals("MOCK")) {
-			clienteMock.alterarCliente(cliente);
-		}
+		clienteDao.alterarObjeto(cliente);
 	}
 
-	public Cliente obter(Object cpf) {
-		if (ACESSO_DADOS.equals("MOCK")) {
-			return clienteMock.obterCliente(cpf.toString());
-		}
-		return null;
+	public Cliente obter(Cliente cliente) {
+		return clienteDao.obterObjeto(cliente);
 	}
 
 	public ArrayList<Cliente> obterTodos() {
-		if (ACESSO_DADOS.equals("MOCK")) {
-			return clienteMock.getClientes();
-		}
-		return null;
-	}
-
-	public void criar(Pessoa pessoa) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void editar(Pessoa pessoa) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void remover(Pessoa pessoa) {
-		// TODO Auto-generated method stub
+		return clienteDao.obterTodos();
 	}
 
 	public void remover(Cliente cliente) {
-		if (ACESSO_DADOS.equals("MOCK")) {
-			clienteMock.excluirCliente(cliente);
-		}
+		clienteDao.excluirObjeto(cliente);
 	}
-
-	public ArrayList obterPessoas(Pessoa pessoa) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
