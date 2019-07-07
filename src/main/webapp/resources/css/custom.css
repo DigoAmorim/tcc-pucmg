@@ -5,6 +5,22 @@ body {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.bd-margin-left40 {
+	margin-left: 40px;
+}
+
+.bd-margin-left40.is-toggled {
+	margin-left: 40px;
+}
+
+@media (min-width: 960px) {
+	.bd-margin-left40 {
+		margin-left: 0px;
+	}
+}
+
+
+
 /* TABVIEW */
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
 	color: #555;

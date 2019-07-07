@@ -1,7 +1,8 @@
 $(function() {
 	$('.js-toggle').bind('click', function(event) {
-		$('.js-sidebar, .js-content').toggleClass('is-toggled');
+		$('.js-sidebar, .js-content, .bd-margin-left40').toggleClass('is-toggled');
 		event.preventDefault();
+		
 	});
 });
 
@@ -12,7 +13,6 @@ function getIdSelected() {
 				vars[key] = value;
 			});
 	document.getElementById(vars["tela"]).classList.add("is-selected");
-	// return vars["tela"];
 }
 
 getIdSelected();

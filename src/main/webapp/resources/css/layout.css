@@ -17,11 +17,12 @@
 /* SIDEBAR */
 .menu-lbl {
 	display: block;
-	padding: 15px 15px;
+	padding: 15px 0px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: bold;
 	text-decoration: none;
-	font-weight: 800;
 	text-align: center;
-	color: #373737;
+	color: #007ad9;
 }
 
 .aw-sidebar {
@@ -30,7 +31,7 @@
 	bottom: 0;
 	left: 0;
 	width: 210px;
-	margin-left: -211px;
+	margin-left: -171px;
 	z-index: 9998;
 	transition: margin-left 0.5s;
 	overflow-y: auto;
@@ -47,7 +48,7 @@
 		margin-left: 0px;
 	}
 	.aw-sidebar.is-toggled {
-		margin-left: -211px;
+		margin-left: -171px;
 	}
 }
 

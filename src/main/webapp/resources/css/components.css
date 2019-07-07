@@ -88,3 +88,12 @@
 .ui-orderlist .ui-orderlist-list {
 	height: auto;
 }
+
+.pi-bars-mine:after {
+	content: "\e91d";
+	float: right;
+	font-family: 'primeicons';
+	font-weight: normal;
+	font-size:24px;
+	cursor: pointer;
+}
