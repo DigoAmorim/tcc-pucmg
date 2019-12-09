@@ -1,0 +1,184 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<h1 class="aw-page-title-modulos">#{msg.gerenciametoInstrutor}</h1>
+		<p:separator />
+		<p:tabView>
+			<p:tab title="#{msg.cadastrarInstrutor}">
+				<h:form>
+
+					<p:growl id="growl1" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4," layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="nomeInstrutor" value="#{msg.nomeInstrutor}:" />
+							<p:inputText id="nomeInstrutor" required="true"
+								value="#{instrutorBean.instrutor.nome}"
+								requiredMessage="#{msg.campo} #{msg.nomeInstrutor} #{msg.obrigatorio}." />
+							<p:outputLabel for="rgInstrutor" value="#{msg.rgInstrutor}:" />
+							<p:inputText id="rgInstrutor" required="true"
+								value="#{instrutorBean.instrutor.rg}"
+								requiredMessage="#{msg.campo} #{msg.rgInstrutor} #{msg.obrigatorio}." />
+							<p:outputLabel for="cpfInstrutor" value="#{msg.cpfInstrutor}:" />
+							<p:inputMask id="cpfInstrutor" required="true"
+								value="#{instrutorBean.instrutor.cpf}" mask="999.999.999-99"
+								requiredMessage="#{msg.campo} #{msg.cpfInstrutor} #{msg.obrigatorio}.">
+								<f:validator validatorId="custom.validadorCpf" />
+							</p:inputMask>
+							<p:outputLabel for="tpAtividades"
+								value="#{msg.tiposDeAtividades}:" />
+							<p:selectManyCheckbox id="tpAtividades"
+								value="#{instrutorBean.instrutor.tpAtividade}"
+								layout="pageDirection" columns="1" required="true"
+								requiredMessage="#{msg.campo} #{msg.tiposDeAtividades} #{msg.obrigatorio}.">
+								<f:selectItems value="#{instrutorBean.listaTpAtividades}"
+									var="car" itemLabel="#{car}" itemValue="#{car}" />
+							</p:selectManyCheckbox>
+						</p:panelGrid>
+						<br></br>
+						<p:commandButton value="#{msg.cadastrarInstrutor}" id="ajax"
+							update="@form" action="#{instrutorBean.cadastrarInstrutor}"
+							styleClass="ui-priority-primary" icon="pi pi-save" />
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msg.alterarInstrutor}">
+				<h:form>
+
+					<p:growl id="growl2" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="3"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="cpfInstrutor" value="#{msg.cpfInstrutor}:" />
+							<p:inputMask id="cpfInstrutor" required="true"
+								value="#{instrutorBean.filtroInstrutorCpf}"
+								mask="999.999.999-99"
+								requiredMessage="#{msg.campo} #{msg.cpfInstrutor} #{msg.obrigatorio}.">
+							</p:inputMask>
+							<p:commandButton icon="pi pi-search"
+								update="@([id$=formAlterarInstrutor])"
+								action="#{instrutorBean.obterInstrutorPorCpf}"
+								value="#{msg.pesquisar}" />
+						</p:panelGrid>
+					</div>
+				</h:form>
+				<p:separator />
+				<h:form id="formAlterarInstrutor">
+
+					<p:growl id="growl3" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4," layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="nomeInstrutor2" value="#{msg.nomeInstrutor}:" />
+							<p:inputText id="nomeInstrutor2" required="true"
+								value="#{instrutorBean.instrutor.nome}"
+								disabled="#{instrutorBean.desabiltarCamposAlterarInstrutor}"
+								requiredMessage="#{msg.campo} #{msg.nomeInstrutor} #{msg.obrigatorio}." />
+							<p:outputLabel for="rgInstrutor2" value="#{msg.rgInstrutor}:" />
+							<p:inputText id="rgInstrutor2" required="true"
+								value="#{instrutorBean.instrutor.rg}"
+								disabled="#{instrutorBean.desabiltarCamposAlterarInstrutor}"
+								requiredMessage="#{msg.campo} #{msg.rgInstrutor} #{msg.obrigatorio}." />
+							<p:outputLabel for="cpfInstrutor2" value="#{msg.cpfInstrutor}:" />
+							<p:inputMask id="cpfInstrutor2" required="true" disabled="true"
+								value="#{instrutorBean.instrutor.cpf}" mask="999.999.999-99"
+								requiredMessage="#{msg.campo} #{msg.cpfInstrutor} #{msg.obrigatorio}.">
+								<f:validator validatorId="custom.validadorCpf" />
+							</p:inputMask>
+							<p:outputLabel for="tpAtividades"
+								value="#{msg.tiposDeAtividades}:" />
+							<p:selectManyCheckbox id="tpAtividades"
+								value="#{instrutorBean.instrutor.tpAtividade}"
+								layout="pageDirection" columns="1" required="true"
+								disabled="#{instrutorBean.desabiltarCamposAlterarInstrutor}"
+								requiredMessage="#{msg.campo} #{msg.tiposDeAtividades} #{msg.obrigatorio}.">
+								<f:selectItems value="#{instrutorBean.listaTpAtividades}"
+									var="car" itemLabel="#{car}" itemValue="#{car}" />
+							</p:selectManyCheckbox>
+						</p:panelGrid>
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-6 ui-md-6,ui-g-6 ui-md-6" layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<p:commandButton value="#{msg.alterarInstrutor}" update="@form"
+								disabled="#{instrutorBean.desabiltarCamposAlterarInstrutor}"
+								action="#{instrutorBean.alterarInstrutor}"
+								styleClass="ui-priority-primary" icon="pi pi-save" />
+							<p:commandButton value="#{msg.excluirInstrutor}" update="@form"
+								styleClass="button-excluir" icon="pi pi-trash"
+								action="#{instrutorBean.excluirInstrutor}"
+								disabled="#{instrutorBean.desabiltarCamposAlterarInstrutor}">
+								<p:confirm header="#{msg.confirmacao}"
+									message="#{msg.temCerteza}" icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+
+							<p:confirmDialog global="true" showEffect="fade"
+								responsive="true" hideEffect="fade">
+								<p:commandButton value="#{msg.sim}" type="button"
+									styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+								<p:commandButton value="#{msg.nao}" type="button"
+									styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+							</p:confirmDialog>
+
+						</p:panelGrid>
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msg.listarInstrutor}">
+				<h:form>
+					<p:dataTable var="listaInstrutores" widgetVar="tabelaInstrutores"
+						id="tabelaInstrutores" rows="10" paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15"
+						value="#{instrutorBean.listaInstrutores}"
+						emptyMessage="#{msg.semRegistros}">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="#{msg.pesquisePorCampos}: " />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tabelaInstrutores').filter()" style="width:200px"
+									filteredValue="#{instrutorBean.instrutoresFiltrados}"
+									placeholder="#{msg.insiraPalavraChave}" />
+							</p:outputPanel>
+						</f:facet>
+
+						<p:column filterBy="#{listaInstrutores.nome}"
+							filterStyle="display:none" headerText="#{msg.nomeInstrutor}">
+							<h:outputText value="#{listaInstrutores.nome}" />
+						</p:column>
+						<p:column headerText="#{msg.rgInstrutor}"
+							filterBy="#{listaInstrutores.rg}" filterStyle="display:none">
+							<h:outputText value="#{listaInstrutores.rg}" />
+						</p:column>
+						<p:column headerText="#{msg.cpfInstrutor}"
+							filterBy="#{listaInstrutores.cpf}" filterStyle="display:none">
+							<h:outputText value="#{listaInstrutores.cpf}" />
+						</p:column>
+						<p:column headerText="#{msg.tiposDeAtividades}"
+							filterBy="#{listaInstrutores.tpAtividadeTxt}"
+							filterStyle="display:none">
+							<h:outputText value="#{listaInstrutores.tpAtividadeTxt}" />
+						</p:column>
+						<f:facet name="paginatorTopLeft">
+							<p:commandButton type="button" icon="pi pi-refresh"
+								onclick="PF('tabelaInstrutores').filter()" />
+						</f:facet>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+
+</ui:composition>

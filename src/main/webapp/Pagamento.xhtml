@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<h1 class="aw-page-title-modulos">#{msg.gerenciametoPagamento}</h1>
+		<p:separator />
+		<p:tabView>
+			<p:tab title="#{msg.registrarPagamento}">
+				<h:form>
+
+					<p:growl id="growl2" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="3"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4,ui-g-12 ui-md-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="cpfCliente" value="#{msg.cpfCliente}:" />
+							<p:inputMask id="cpfCliente" required="true"
+								value="#{pagamentoBean.filtroClienteCpf}" mask="999.999.999-99"
+								requiredMessage="#{msg.campo} #{msg.cpfCliente} #{msg.obrigatorio}.">
+							</p:inputMask>
+							<p:commandButton icon="pi pi-search"
+								update="@([id$=formRegistrarPagamento])"
+								action="#{pagamentoBean.obterClientePorCpf}"
+								value="#{msg.pesquisar}" />
+						</p:panelGrid>
+					</div>
+				</h:form>
+				<p:separator />
+				<h:form id="formRegistrarPagamento">
+
+					<p:growl id="growl3" life="5000" />
+
+					<div class="ui-fluid">
+						<p:panelGrid columns="4"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4, ui-g-12 ui-md-2,ui-g-12 ui-md-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="nomeCliente" value="#{msg.nomeCliente}:" />
+							<p:inputText id="nomeCliente"
+								value="#{pagamentoBean.pagamento.cliente.nome}" disabled="true" />
+							<p:outputLabel for="rgCliente" value="#{msg.rgCliente}:" />
+							<p:inputText id="rgCliente"
+								value="#{pagamentoBean.pagamento.cliente.rg}" disabled="true" />
+							<p:outputLabel for="cpfCliente" value="#{msg.cpfCliente}:" />
+							<p:inputMask id="cpfCliente" disabled="true"
+								value="#{pagamentoBean.pagamento.cliente.cpf}"
+								mask="999.999.999-99">
+								<f:validator validatorId="custom.validadorCpf" />
+							</p:inputMask>
+							<p:outputLabel for="tpPlano" value="#{msg.tpPlano}:" />
+							<p:inputText id="tpPlano"
+								value="#{pagamentoBean.pagamento.cliente.tpPlano}"
+								disabled="true" />
+							<p:outputLabel for="sitCliente" value="#{msg.sitCliente}:" />
+							<p:inputText id="sitCliente"
+								styleClass="#{pagamentoBean.pagamento.cliente.sitCliente}"
+								value="#{pagamentoBean.pagamento.cliente.sitCliente}"
+								style="font-weight:bold;" disabled="true" />
+							<p:outputLabel for="proxVencimento"
+								value="#{msg.proxVencimento}:" />
+							<p:inputText id="proxVencimento"
+								value="#{pagamentoBean.pagamento.cliente.proxDataVencimento}"
+								disabled="true" />
+						</p:panelGrid>
+						<p:separator />
+						<p:panelGrid columns="4"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-4, ui-g-12 ui-md-2,ui-g-12 ui-md-4"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel for="dtPagamento" value="#{msg.dtPagamento}:" />
+							<p:calendar id="dtPagamento" locale="pt_BR" required="true"
+								disabled="#{pagamentoBean.desabiltarCamposRegistrarPagamento}"
+								requiredMessage="#{msg.campo} #{msg.dtPagamento} #{msg.obrigatorio}."
+								value="#{pagamentoBean.pagamento.dtPagamento}" showOn="button" />
+							<p:outputLabel for="vlrPagamento" value="#{msg.vlrPagamento}:" />
+							<p:inputNumber id="vlrPagamento" symbol="R$ " symbolPosition="p"
+								decimalSeparator="," thousandSeparator="." required="true"
+								disabled="#{pagamentoBean.desabiltarCamposRegistrarPagamento}"
+								requiredMessage="#{msg.campo} #{msg.vlrPagamento} #{msg.obrigatorio}."
+								value="#{pagamentoBean.pagamento.valorPagamento}" />
+						</p:panelGrid>
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12"
+							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:commandButton value="#{msg.registrarPagamento}" update="@form"
+								disabled="#{pagamentoBean.desabiltarCamposRegistrarPagamento}"
+								action="#{pagamentoBean.registrarPagamento}" id="ajax"
+								styleClass="ui-priority-primary" icon="pi pi-dollar">
+								<p:confirm header="#{msg.confirmacao}"
+									message="#{msg.temCerteza}" icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+
+							<p:confirmDialog global="true" showEffect="fade"
+								responsive="true" hideEffect="fade">
+								<p:commandButton value="#{msg.sim}" type="button"
+									styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+								<p:commandButton value="#{msg.nao}" type="button"
+									styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+							</p:confirmDialog>
+						</p:panelGrid>
+					</div>
+				</h:form>
+			</p:tab>
+			<p:tab title="#{msg.listarInstrutor}">
+				<h:form>
+					<p:dataTable var="listaInstrutores" widgetVar="tabelaInstrutores"
+						id="tabelaInstrutores" rows="10" paginator="true"
+						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15"
+						value="#{instrutorBean.listaInstrutores}"
+						emptyMessage="#{msg.semRegistros}">
+
+						<f:facet name="header">
+							<p:outputPanel>
+								<h:outputText value="#{msg.pesquisePorCampos}: " />
+								<p:inputText id="globalFilter"
+									onkeyup="PF('tabelaInstrutores').filter()" style="width:200px"
+									filteredValue="#{instrutorBean.instrutoresFiltrados}"
+									placeholder="#{msg.insiraPalavraChave}" />
+							</p:outputPanel>
+						</f:facet>
+
+						<p:column filterBy="#{listaInstrutores.nome}"
+							filterStyle="display:none" headerText="#{msg.nomeInstrutor}">
+							<h:outputText value="#{listaInstrutores.nome}" />
+						</p:column>
+						<p:column headerText="#{msg.rgInstrutor}"
+							filterBy="#{listaInstrutores.rg}" filterStyle="display:none">
+							<h:outputText value="#{listaInstrutores.rg}" />
+						</p:column>
+						<p:column headerText="#{msg.cpfInstrutor}"
+							filterBy="#{listaInstrutores.cpf}" filterStyle="display:none">
+							<h:outputText value="#{listaInstrutores.cpf}" />
+						</p:column>
+						<p:column headerText="#{msg.tiposDeAtividades}"
+							filterBy="#{listaInstrutores.tpAtividadeTxt}"
+							filterStyle="display:none">
+							<h:outputText value="#{listaInstrutores.tpAtividadeTxt}" />
+						</p:column>
+						<f:facet name="paginatorTopLeft">
+							<p:commandButton type="button" icon="pi pi-refresh"
+								onclick="PF('tabelaInstrutores').filter()" />
+						</f:facet>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+
+</ui:composition>
