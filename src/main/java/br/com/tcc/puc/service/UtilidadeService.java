@@ -24,5 +24,19 @@ public class UtilidadeService {
 		}
 		return null;
 	}
+	
+	public List<SelectItem> obterTpAtividades() {
+		if (ACESSO_DADOS.equals("MOCK")) {
+			return utilMock.getListaTpAtividades();
+		}
+		return null;
+	}
+	
+	public List<SelectItem> obterTpPlanos() {
+		if (ACESSO_DADOS.equals("MOCK")) {
+			return utilMock.getListaTpPlanos();
+		}
+		return null;
+	}
 
 }

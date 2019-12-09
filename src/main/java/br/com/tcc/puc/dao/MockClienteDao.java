@@ -1,6 +1,7 @@
 package br.com.tcc.puc.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import br.com.tcc.puc.model.Cliente;
@@ -12,7 +13,7 @@ import br.com.tcc.puc.model.Cliente;
  *         CRUD de Cliente.
  * 
  */
-public class MockClienteDao implements Dao<Cliente> {
+public class MockClienteDao implements CrudDao<Cliente> {
 
 	private ArrayList<Cliente> clientes = null;
 
@@ -91,6 +92,8 @@ public class MockClienteDao implements Dao<Cliente> {
 		c.setNumero(new Integer(23));
 		c.setRg("054.052.69-00");
 		c.setCidade("Salvador");
+		c.setTpPlano("Mensal");
+		c.setDtMatricula(new Date(System.currentTimeMillis()));
 		clientes.add(c);
 		c = new Cliente();
 		c.setNome("João da Silva");
@@ -99,6 +102,8 @@ public class MockClienteDao implements Dao<Cliente> {
 		c.setNumero(new Integer(345));
 		c.setRg("876.522.55-00");
 		c.setCidade("Recife");
+		c.setTpPlano("Mensal");
+		c.setDtMatricula(new Date(System.currentTimeMillis()));
 		clientes.add(c);
 		c = new Cliente();
 		c.setNome("Maria do Rosário");
@@ -107,6 +112,8 @@ public class MockClienteDao implements Dao<Cliente> {
 		c.setNumero(new Integer(1234));
 		c.setRg("332.001.55-70");
 		c.setCidade("Porto Alegre");
+		c.setTpPlano("Anual");
+		c.setDtMatricula(new Date(System.currentTimeMillis()));
 		clientes.add(c);
 
 	}

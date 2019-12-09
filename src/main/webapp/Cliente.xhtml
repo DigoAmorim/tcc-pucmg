@@ -53,6 +53,13 @@
 							<p:inputText id="cidadeCliente" required="true"
 								value="#{clienteBean.cliente.cidade}"
 								requiredMessage="#{msg.campo} #{msg.cidadeCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="tpPlano" value="#{msg.tpPlano}:" />
+							<p:selectOneMenu id="tpPlano" required="true"
+								value="#{clienteBean.cliente.tpPlano}"
+								requiredMessage="#{msg.campo} #{msg.tpPlano} #{msg.obrigatorio}.">
+								<f:selectItem itemLabel="#{msg.selecione}" itemValue="" />
+								<f:selectItems value="#{clienteBean.listaTpPlanos}" />
+							</p:selectOneMenu>
 						</p:panelGrid>
 						<br></br>
 						<p:commandButton value="#{msg.cadastrarCliente}" id="ajax"
@@ -123,11 +130,19 @@
 								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
 								value="#{clienteBean.cliente.cidade}"
 								requiredMessage="#{msg.campo} #{msg.cidadeCliente} #{msg.obrigatorio}." />
+							<p:outputLabel for="tpPlano" value="#{msg.tpPlano}:" />
+							<p:selectOneMenu id="tpPlano" required="true"
+								value="#{clienteBean.cliente.tpPlano}"
+								requiredMessage="#{msg.campo} #{msg.tpPlano} #{msg.obrigatorio}."
+								disabled="#{clienteBean.desabiltarCamposAlterarCliente}">
+								<f:selectItem itemLabel="#{msg.selecione}" itemValue="" />
+								<f:selectItems value="#{clienteBean.listaTpPlanos}" />
+							</p:selectOneMenu>
 						</p:panelGrid>
 						<p:panelGrid columns="2"
 							columnClasses="ui-g-6 ui-md-6,ui-g-6 ui-md-6" layout="grid"
 							styleClass="ui-panelgrid-blank ui-fluid">
-							<p:commandButton value="#{msg.altearCliente}" update="@form"
+							<p:commandButton value="#{msg.alterarCliente}" update="@form"
 								disabled="#{clienteBean.desabiltarCamposAlterarCliente}"
 								action="#{clienteBean.alterarCliente}"
 								styleClass="ui-priority-primary" icon="pi pi-save" />
@@ -135,12 +150,12 @@
 								styleClass="button-excluir" icon="pi pi-trash"
 								action="#{clienteBean.excluirCliente}"
 								disabled="#{clienteBean.desabiltarCamposAlterarCliente}">
-								<p:confirm header="#{msg.confirmacao}" message="#{msg.temCerteza}"
-									icon="pi pi-exclamation-triangle" />
+								<p:confirm header="#{msg.confirmacao}"
+									message="#{msg.temCerteza}" icon="pi pi-exclamation-triangle" />
 							</p:commandButton>
 
-							<p:confirmDialog global="true" showEffect="fade" responsive="true"
-								hideEffect="fade" >
+							<p:confirmDialog global="true" showEffect="fade"
+								responsive="true" hideEffect="fade">
 								<p:commandButton value="#{msg.sim}" type="button"
 									styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
 								<p:commandButton value="#{msg.nao}" type="button"
@@ -189,6 +204,10 @@
 						<p:column headerText="#{msg.cidadeCliente}"
 							filterBy="#{listaClientes.cidade}" filterStyle="display:none">
 							<h:outputText value="#{listaClientes.cidade}" />
+						</p:column>
+						<p:column headerText="#{msg.tpPlano}"
+							filterBy="#{listaClientes.tpPlano}" filterStyle="display:none">
+							<h:outputText value="#{listaClientes.tpPlano}" />
 						</p:column>
 
 						<f:facet name="paginatorTopLeft">

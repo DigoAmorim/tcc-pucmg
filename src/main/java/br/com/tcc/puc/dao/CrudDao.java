@@ -2,7 +2,7 @@ package br.com.tcc.puc.dao;
 
 import java.util.ArrayList;
 
-public interface Dao<O> {
+public interface CrudDao<O> {
     
 	ArrayList<O> obterTodos();
 	

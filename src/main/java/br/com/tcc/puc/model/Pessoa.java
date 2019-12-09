@@ -10,7 +10,7 @@ package br.com.tcc.puc.model;
 public abstract class Pessoa {
 
 	protected String nome = null;
-	protected String telefone = null;
+	protected String rg = null;
 	protected String cpf = null;
 	
 	public String getNome() {
@@ -19,11 +19,11 @@ public abstract class Pessoa {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getTelefone() {
-		return telefone;
+	public String getRg() {
+		return rg;
 	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	public void setRg(String rg) {
+		this.rg = rg;
 	}
 	public String getCpf() {
 		return cpf;
@@ -31,6 +31,5 @@ public abstract class Pessoa {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-
 	
 }

@@ -11,17 +11,25 @@ import javax.faces.model.SelectItem;
 /**
  * @author Rodrigo
  *
- *         Classe que simula o acesso ao BD para testar as funcionalidade que são úteis na
- *         aplicação.
+ *         Classe que simula o acesso ao BD para testar as funcionalidade que
+ *         são úteis na aplicação.
  * 
  */
 public class UtilMock {
 
 	private ArrayList<SelectItem> listaEstados = null;
 
+	private ArrayList<SelectItem> listaTpAtividades = null;
+	
+	private ArrayList<SelectItem> listaTpPlanos = null;
+
 	public UtilMock() {
 		listaEstados = new ArrayList<SelectItem>();
+		listaTpAtividades = new ArrayList<SelectItem>();
+		listaTpPlanos = new ArrayList<SelectItem>(); 
 		popularEstados();
+		popularTpAtividades();
+		popularTpPlano();
 
 	}
 
@@ -55,12 +63,38 @@ public class UtilMock {
 		listaEstados.add(new SelectItem("TO", "Tocantins"));
 	}
 
+	private void popularTpAtividades() {
+		listaTpAtividades.add(new SelectItem("Aulas em grupo", "Aulas em grupo"));
+		listaTpAtividades.add(new SelectItem("Musculação", "Musculação"));
+	}
+	
+	private void popularTpPlano() {
+		listaTpPlanos.add(new SelectItem("Mensal", "Pagamento Mensal"));
+		listaTpPlanos.add(new SelectItem("Anual", "Pagamento Anual"));
+	}
+
 	public ArrayList<SelectItem> getListaEstados() {
 		return listaEstados;
 	}
 
 	public void setListaEstados(ArrayList<SelectItem> listaEstados) {
 		this.listaEstados = listaEstados;
+	}
+
+	public ArrayList<SelectItem> getListaTpAtividades() {
+		return listaTpAtividades;
+	}
+
+	public void setListaTpAtividades(ArrayList<SelectItem> listaTpAtividades) {
+		this.listaTpAtividades = listaTpAtividades;
+	}
+
+	public ArrayList<SelectItem> getListaTpPlanos() {
+		return listaTpPlanos;
+	}
+
+	public void setListaTpPlanos(ArrayList<SelectItem> listaTpPlanos) {
+		this.listaTpPlanos = listaTpPlanos;
 	}
 	
 	

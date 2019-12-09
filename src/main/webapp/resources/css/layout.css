@@ -54,16 +54,24 @@
 
 /* CONTENT */
 .aw-content {
-	padding: 0 15px;
+	padding: 0 0px;
 	margin-top: 80px;
 	transition: margin-left 0.5s;
 }
 
 @media ( min-width : 960px) {
 	.aw-content {
-		margin-left: 210px;
+		margin-left: 185px;
 	}
 	.aw-content.is-toggled {
-		margin-left: 0;
+		margin-left: 15px;
 	}
+}
+
+.ui-state-disabled.Inadimplente {
+	color: red;
+}
+
+.ui-state-disabled.Adimplente {
+	color: green;
 }

@@ -4,8 +4,9 @@
 package br.com.tcc.puc.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-import br.com.tcc.puc.dao.Dao;
+import br.com.tcc.puc.dao.CrudDao;
 import br.com.tcc.puc.dao.MockClienteDao;
 import br.com.tcc.puc.model.Cliente;
 
@@ -20,7 +21,7 @@ public class ClienteService {
 
 	static final String ACESSO_DADOS = "MOCK";
 
-	private Dao<Cliente> clienteDao;
+	private CrudDao<Cliente> clienteDao;
 	
 	public ClienteService(String tipoAcesso) {
 		if (tipoAcesso.equals(ACESSO_DADOS)) {
@@ -29,6 +30,8 @@ public class ClienteService {
 	}
 
 	public void criar(Cliente cliente) {
+		// Ajustar a data do dia como data da matrícula do cliente
+		cliente.setDtMatricula(new Date(System.currentTimeMillis()));
 		clienteDao.adicionarObjeto(cliente);
 	}
 

@@ -13,14 +13,6 @@ body {
 	margin-left: 40px;
 }
 
-@media (min-width: 960px) {
-	.bd-margin-left40 {
-		margin-left: 0px;
-	}
-}
-
-
-
 /* TABVIEW */
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
 	color: #555;
@@ -42,3 +34,5 @@ body {
 		border: none;
 	}
 }
+
+

@@ -156,6 +156,11 @@ public class ClienteBean {
 		instanciarUtilidadeService();
 		return utilService.obterEstados();
 	}
+	
+	public List<SelectItem> getListaTpPlanos() {
+		instanciarUtilidadeService();
+		return utilService.obterTpPlanos();
+	}
 
 	public String getFiltroClienteCpf() {
 		return filtroClienteCpf;

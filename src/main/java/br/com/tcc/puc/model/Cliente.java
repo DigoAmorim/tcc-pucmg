@@ -1,6 +1,7 @@
 package br.com.tcc.puc.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Essa classe representará o cliente que será armazenado em nossa aplicação. Ele herda os campos de Pessoa.
@@ -11,8 +12,6 @@ public class Cliente extends Pessoa implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 
-	private String rg = null;
-	
 	private String endereco = null;
 	
 	private String estado = null;
@@ -20,15 +19,15 @@ public class Cliente extends Pessoa implements Serializable  {
 	private Integer numero = null;
 	
 	private String cidade = null;
-
-	public String getRg() {
-		return rg;
-	}
-
-	public void setRg(String rg) {
-		this.rg = rg;
-	}
-
+	
+	private String tpPlano = null;
+	
+	private Date dtMatricula = null;
+	
+	private String sitCliente = null;
+	
+	private String proxDataVencimento = null;
+	
 	public String getEndereco() {
 		return endereco;
 	}
@@ -60,7 +59,37 @@ public class Cliente extends Pessoa implements Serializable  {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
-	
+
+	public String getTpPlano() {
+		return tpPlano;
+	}
+
+	public void setTpPlano(String tpPlano) {
+		this.tpPlano = tpPlano;
+	}
+
+	public Date getDtMatricula() {
+		return dtMatricula;
+	}
+
+	public void setDtMatricula(Date dtMatricula) {
+		this.dtMatricula = dtMatricula;
+	}
+
+	public String getSitCliente() {
+		return sitCliente;
+	}
+
+	public void setSitCliente(String sitCliente) {
+		this.sitCliente = sitCliente;
+	}
+
+	public String getProxDataVencimento() {
+		return proxDataVencimento;
+	}
+
+	public void setProxDataVencimento(String proxDataVencimento) {
+		this.proxDataVencimento = proxDataVencimento;
+	}
 	
 }
