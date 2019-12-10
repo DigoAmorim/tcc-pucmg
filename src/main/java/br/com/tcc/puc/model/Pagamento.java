@@ -1,14 +1,16 @@
 package br.com.tcc.puc.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Essa classe representará o pagamento que será armazenado em nossa aplicação.
  * @author Rodrigo
  *  
  */
-public class Pagamento implements Serializable  {
+public class Pagamento implements Serializable, Comparable<Pagamento> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -16,7 +18,14 @@ public class Pagamento implements Serializable  {
 	
 	private Date dtPagamento = null;
 	
-	private Float valorPagamento = null;
+	private Double valorPagamento = null;
+	
+	//Método que ajudará a efetuar a comparação entre os dias de pagamento, para ordená-lo em ordem crescente.
+	public int compareTo(Pagamento o) {
+		long difDias;
+		difDias = ChronoUnit.DAYS.between(this.dtPagamento.toInstant(), o.dtPagamento.toInstant());  
+		return (int)difDias;
+	}
 
 	public Cliente getCliente() {
 		return cliente;
@@ -34,14 +43,12 @@ public class Pagamento implements Serializable  {
 		this.dtPagamento = dtPagamento;
 	}
 
-	public Float getValorPagamento() {
+	public Double getValorPagamento() {
 		return valorPagamento;
 	}
 
-	public void setValorPagamento(Float valorPagamento) {
+	public void setValorPagamento(Double valorPagamento) {
 		this.valorPagamento = valorPagamento;
 	}
-	
-	
-	
+
 }

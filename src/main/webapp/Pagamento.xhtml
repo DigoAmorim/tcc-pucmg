@@ -104,45 +104,46 @@
 					</div>
 				</h:form>
 			</p:tab>
-			<p:tab title="#{msg.listarInstrutor}">
+			<p:tab title="#{msg.listarPagamentos}">
 				<h:form>
-					<p:dataTable var="listaInstrutores" widgetVar="tabelaInstrutores"
-						id="tabelaInstrutores" rows="10" paginator="true"
+					<p:dataTable var="listaPagamentos" widgetVar="tabelaPagamentos"
+						id="tabelaPagamentos" rows="10" paginator="true"
 						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 						rowsPerPageTemplate="5,10,15"
-						value="#{instrutorBean.listaInstrutores}"
+						value="#{pagamentoBean.listaPagamentos}"
 						emptyMessage="#{msg.semRegistros}">
 
 						<f:facet name="header">
 							<p:outputPanel>
 								<h:outputText value="#{msg.pesquisePorCampos}: " />
 								<p:inputText id="globalFilter"
-									onkeyup="PF('tabelaInstrutores').filter()" style="width:200px"
-									filteredValue="#{instrutorBean.instrutoresFiltrados}"
+									onkeyup="PF('tabelaPagamentos').filter()" style="width:200px"
+									filteredValue="#{pagamentoBean.pagamentosFiltrados}"
 									placeholder="#{msg.insiraPalavraChave}" />
 							</p:outputPanel>
 						</f:facet>
 
-						<p:column filterBy="#{listaInstrutores.nome}"
-							filterStyle="display:none" headerText="#{msg.nomeInstrutor}">
-							<h:outputText value="#{listaInstrutores.nome}" />
+						<p:column filterBy="#{listaPagamentos.cliente.nome}"
+							filterStyle="display:none" headerText="#{msg.nomeCliente}">
+							<h:outputText value="#{listaPagamentos.cliente.nome}" />
 						</p:column>
-						<p:column headerText="#{msg.rgInstrutor}"
-							filterBy="#{listaInstrutores.rg}" filterStyle="display:none">
-							<h:outputText value="#{listaInstrutores.rg}" />
-						</p:column>
-						<p:column headerText="#{msg.cpfInstrutor}"
-							filterBy="#{listaInstrutores.cpf}" filterStyle="display:none">
-							<h:outputText value="#{listaInstrutores.cpf}" />
-						</p:column>
-						<p:column headerText="#{msg.tiposDeAtividades}"
-							filterBy="#{listaInstrutores.tpAtividadeTxt}"
+						<p:column headerText="#{msg.dtPagamento}"
+							filterBy="#{listaPagamentos.dtPagamento}"
 							filterStyle="display:none">
-							<h:outputText value="#{listaInstrutores.tpAtividadeTxt}" />
+							<h:outputText value="#{listaPagamentos.dtPagamento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="#{msg.vlrPagamento}"
+							filterBy="#{listaPagamentos.valorPagamento}"
+							filterStyle="display:none">
+							<h:outputText value="#{listaPagamentos.valorPagamento}">
+								<f:convertNumber type="currency" currencySymbol="R$" />
+							</h:outputText>
 						</p:column>
 						<f:facet name="paginatorTopLeft">
 							<p:commandButton type="button" icon="pi pi-refresh"
-								onclick="PF('tabelaInstrutores').filter()" />
+								onclick="PF('tabelaPagamentos').filter()" />
 						</f:facet>
 					</p:dataTable>
 				</h:form>

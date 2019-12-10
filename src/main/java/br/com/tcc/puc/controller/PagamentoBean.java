@@ -1,19 +1,16 @@
 package br.com.tcc.puc.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.model.SelectItem;
 
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.model.Pagamento;
 import br.com.tcc.puc.service.ClienteService;
 import br.com.tcc.puc.service.PagamentoService;
-import br.com.tcc.puc.service.UtilidadeService;
 import br.com.tcc.puc.util.Utilidade;
 
 @ManagedBean
@@ -28,6 +25,7 @@ public class PagamentoBean {
 	private Pagamento pagamento = null;
 	private String filtroClienteCpf = null;
 	private boolean desabiltarCamposRegistrarPagamento = true;
+	private ArrayList<Pagamento> pagamentosFiltrados = new ArrayList<Pagamento>();
 
 	private ClienteService clienteService = null;
 	private PagamentoService pagamentoService = null;
@@ -46,7 +44,7 @@ public class PagamentoBean {
 		instanciarClienteService();
 		pagamento.setCliente(clienteService.obter(Cliparam));
 		instanciarPagamentoService();
-		pagamento.setCliente(pagamentoService.obterInfoPagamento(pagamento.getCliente()));
+		pagamento.setCliente(pagamentoService.obterInfoFinanceira(pagamento.getCliente()));
 		setDesabiltarCamposRegistrarPagamento(true);
 		if (Objects.isNull(pagamento.getCliente())) {
 			Utilidade.retornarMensagem(Utilidade.getMessage("clienteNaoEncontrado", null), FacesMessage.SEVERITY_WARN);
@@ -66,6 +64,8 @@ public class PagamentoBean {
 		try {
 			pagamentoService.criar(pagamento);
 			Utilidade.retornarMensagem(Utilidade.getMessage("pagamentoRegistradoSucesso", null), FacesMessage.SEVERITY_INFO);
+		} catch (IllegalArgumentException e) {
+			Utilidade.retornarMensagem(Utilidade.getMessage(e.getMessage(), null), FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
 			System.out.println("Erro precisa ser tratado");
 		} finally {
@@ -106,9 +106,9 @@ public class PagamentoBean {
 	 * Métodos Getters and Setters
 	 * 
 	 */
-	public ArrayList<Cliente> getListaClientes() {
-		instanciarClienteService();
-		return clienteService.obterTodos();
+	public ArrayList<Pagamento> getListaPagamentos() {
+		instanciarPagamentoService();
+		return pagamentoService.obterTodos();
 	}
 
 	public String getFiltroClienteCpf() {
@@ -133,6 +133,14 @@ public class PagamentoBean {
 
 	public void setPagamento(Pagamento pagamento) {
 		this.pagamento = pagamento;
+	}
+	
+	public ArrayList<Pagamento> getPagamentosFiltrados() {
+		return pagamentosFiltrados;
+	}
+
+	public void setPagamentosFiltrados(ArrayList<Pagamento> pagamentosFiltrados) {
+		this.pagamentosFiltrados = pagamentosFiltrados;
 	}
 
 	public boolean isDesabiltarCamposRegistrarPagamento() {

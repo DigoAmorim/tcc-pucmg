@@ -7,12 +7,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+
+import javax.faces.application.FacesMessage;
 
 import br.com.tcc.puc.dao.MockPagamentoDao;
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.model.Pagamento;
+import br.com.tcc.puc.util.Utilidade;
 
 /**
  * @author Rodrigo
@@ -33,70 +37,124 @@ public class PagamentoService {
 		}
 	}
 
-	public void criar(Pagamento pagamento) {
-		pagamentoDao.adicionarObjeto(pagamento);
+	public void criar(Pagamento pagamento) throws IllegalArgumentException {
+		Date dtVencimento;
+
+		dtVencimento = obtemProxDataVencimento(pagamento.getCliente());
+		if (dtVencimento == null) {
+			pagamentoDao.adicionarObjeto(pagamento);
+		} else {
+			Calendar calDtVencimento = Calendar.getInstance();
+			Calendar calDtPagamento = Calendar.getInstance();
+
+			calDtVencimento.setTime(dtVencimento);
+			calDtPagamento.setTime(pagamento.getDtPagamento());
+			if (calDtPagamento.before(calDtVencimento)) {
+				throw new IllegalArgumentException("dtPagamentoAnteriorVencimento");
+			} else {
+				pagamentoDao.adicionarObjeto(pagamento);
+			}
+		}
 	}
 
 	public ArrayList<Pagamento> obterPagamentos(Cliente cli) {
 		return pagamentoDao.obterObjeto(cli);
 	}
-
-	public Cliente obterInfoPagamento(Cliente cli) {
+	
+	/**
+	 * Método que analisa, a partir dos pagamentos efetuados, qual é a próxima data
+	 * de vencimento e o status do cliente
+	 * 
+	 * @param Cli -> Cliente a ser analisado pelo método
+	 * @return Retorna o mesmo objeto com as informações de data de vencimento e
+	 *         status atualizadas.
+	 */
+	public Cliente obterInfoFinanceira(Cliente cli) {
+		// Inicialização das variáveis
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Calendar calPagamento = Calendar.getInstance();
-		Pagamento pagEfetuado;
-		ArrayList<Pagamento> pagamentosCliente = obterPagamentos(cli);
-		Date dataVerificacao = cli.getDtMatricula();
-		Calendar calVerificacao = Calendar.getInstance();
-		calVerificacao.setTime(dataVerificacao);
-		cli.setProxDataVencimento(dateFormat.format(dataVerificacao));
+		Calendar calUltPagamento = Calendar.getInstance();
+		Calendar calHoje = Calendar.getInstance();
+		Date dtVencimento;
 
-		// Enquanto o dia de verificação for inferior ao dia atual, temos que procurar
-		// pelo respectivo pagamento.
-		while (!calVerificacao.getTime().after(new Date(System.currentTimeMillis()))) {
-			cli.setSitCliente("Inadimplente");
-			// Ajusta Calendário coma data de verificação (Inicialmente a data da matrícula)
-			// Pega todos os pagamentos já realizados pelo cliente
-			if (!pagamentosCliente.isEmpty()) {
-				for (Iterator<Pagamento> iterator = pagamentosCliente.iterator(); iterator.hasNext();) {
-					pagEfetuado = (Pagamento) iterator.next();
-					calPagamento.setTime(pagEfetuado.getDtPagamento());
-					// Verifica se houve pagamento para cada uma dos períodos, conforme plano
-					// contratado
-					if (calVerificacao.get(Calendar.MONTH) == calPagamento.get(Calendar.MONTH)) {
-						if (calVerificacao.get(Calendar.YEAR) == calPagamento.get(Calendar.YEAR)) {
-							if (cli.getTpPlano().equals("Mensal")) {
-								calVerificacao.add(Calendar.DATE, 30);
-								cli.setSitCliente("Adimplente");
-								cli.setProxDataVencimento(dateFormat.format(calVerificacao.getTime()));
-								break;
-							} else if (cli.getTpPlano().equals("Anual")) {
-								calVerificacao.add(Calendar.DATE, 365);
-								cli.setSitCliente("Adimplente");
-								cli.setProxDataVencimento(dateFormat.format(calVerificacao.getTime()));
-								break;
-							}
-						}
-					}
-				}
+		// Obtem próxima data de vencimento
+		dtVencimento = obtemProxDataVencimento(cli);
+		// Verificar se já houve algum pagamento. Caso não tenha havido, considerar o
+		// cliente como: Pendente 1° parcela
+		if (dtVencimento == null) {
+			cli.setSitCliente("Pendente 1° Pagamento");
+			return cli;
+		} else {
+			// preenche o cliente com a última data de vencimento
+			cli.setProxDataVencimento(dateFormat.format(dtVencimento));
+			// Ajusta calendário com a data de hoje
+			calHoje.setTime(new Date(System.currentTimeMillis()));
+			// Pega a última data de pagamento
+			calUltPagamento.setTime(obtemUltPagamento(cli).getDtPagamento());
+			// Verifica o status financeiro do aluno. Se for hoje a data de vencimento ou
+			// superior, o cliente está adimplente
+			if (mesmaData(calHoje, calUltPagamento)
+					|| (calUltPagamento.getTime().after(new Date(System.currentTimeMillis())))) {
+				cli.setSitCliente("Adimplente");
+				// Caso contrário ele está inadimplente
 			} else {
-				// Não foi feito até o momento nenhum pagamento
-				// Verifica se a data de pagamento é hoje.
-				Calendar calHoje = Calendar.getInstance();
-				calHoje.setTime(new Date(System.currentTimeMillis()));
-				if (mesmaData(calHoje, calVerificacao)) {
-					cli.setSitCliente("Adimplente");
-				}
-				break;
+				cli.setSitCliente("Inadimplente");
 			}
 		}
 		return cli;
 	}
-	
+
+	/**
+	 * Obtem próxima data de vencimento do plano do cliente
+	 * 
+	 * @param Cli -> Cliente a ser analisado pelo método
+	 * @return Retorna um objeto do tipo Date com a data de vencimento do plano
+	 */
+	public Date obtemProxDataVencimento(Cliente cli) {
+		Calendar calUltPagamento = Calendar.getInstance();
+		Pagamento ultPagamento;
+
+		// Obtem o último pagamento do cliente
+		ultPagamento = obtemUltPagamento(cli);
+		if (ultPagamento != null) {
+			// Seta o dia do último pagamento no calendário
+			calUltPagamento.setTime(ultPagamento.getDtPagamento());
+			// Obtem o plano para saber quando será a data de vencimento.
+			if (cli.getTpPlano().equals("Mensal")) {
+				calUltPagamento.add(Calendar.DATE, 30);
+			} else if (cli.getTpPlano().equals("Anual")) {
+				calUltPagamento.add(Calendar.DATE, 365);
+			}
+			return calUltPagamento.getTime();
+		}
+		return null;
+	}
+
+	public Pagamento obtemUltPagamento(Cliente cli) {
+		// Inicialização das variáveis
+		ArrayList<Pagamento> pagamentosCliente;
+
+		// Obtem os pagamentos efetuado pelo cliente
+		pagamentosCliente = obterPagamentos(cli);
+		if (!pagamentosCliente.isEmpty()) {
+			// Ordena os pagamentos por ordem decrescente
+			Collections.sort(pagamentosCliente);
+			// Pega o último pagamento efetuado
+			return pagamentosCliente.get(0);
+		}
+		return null;
+	}
+
+	/**
+	 * Méotdo que verifica se duas datas recebidas correspondem ao mesmo dia.
+	 * 
+	 * @param c1 - Calendário 01 que está configurado para uma determinada data.
+	 * @param c2 - Calendário 02 que está configurado para uma determinada data.
+	 * @return Retorna true se as datas forem as mesmas e false se as datas forem
+	 *         diferentes.
+	 */
 	private boolean mesmaData(Calendar c1, Calendar c2) {
-	    return (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && 
-	            c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH) &&
-	            c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH));
+		return (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
+				&& c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH));
 	}
 
 	public ArrayList<Pagamento> obterTodos() {
