@@ -16,7 +16,9 @@ import br.com.tcc.puc.util.Utilidade;
 @ManagedBean
 @SessionScoped
 /**
- * Bean responsável pelo controle das telas de manipulação dos pagamentos dos clientes.
+ * Bean responsável pelo controle das telas de manipulação dos pagamentos dos
+ * clientes.
+ * 
  * @author Rodrigo
  *
  */
@@ -35,8 +37,11 @@ public class PagamentoBean {
 	}
 
 	/**
-	 * Na tela de alteração, uma das funcionalidade é obter o cliente pelo identificador, que no caso é o CPF.
-	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 * Na tela de alteração, uma das funcionalidade é obter o cliente pelo
+	 * identificador, que no caso é o CPF.
+	 * 
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se
+	 *         manterá na mesma página.
 	 */
 	public String obterClientePorCpf() {
 		Cliente Cliparam = new Cliente();
@@ -54,16 +59,19 @@ public class PagamentoBean {
 		}
 		return "Pagamento";
 	}
-	
+
 	/**
 	 * Método acionado no momento em que o usuário registra um pagamento
-	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 * 
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se
+	 *         manterá na mesma página.
 	 */
 	public String registrarPagamento() {
 		instanciarPagamentoService();
 		try {
 			pagamentoService.criar(pagamento);
-			Utilidade.retornarMensagem(Utilidade.getMessage("pagamentoRegistradoSucesso", null), FacesMessage.SEVERITY_INFO);
+			Utilidade.retornarMensagem(Utilidade.getMessage("pagamentoRegistradoSucesso", null),
+					FacesMessage.SEVERITY_INFO);
 		} catch (IllegalArgumentException e) {
 			Utilidade.retornarMensagem(Utilidade.getMessage(e.getMessage(), null), FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
@@ -91,7 +99,7 @@ public class PagamentoBean {
 			clienteService = new ClienteService("MOCK");
 		}
 	}
-	
+
 	/**
 	 * Método para instanciar o serviço de pagamentos da aplicação
 	 */
@@ -134,7 +142,7 @@ public class PagamentoBean {
 	public void setPagamento(Pagamento pagamento) {
 		this.pagamento = pagamento;
 	}
-	
+
 	public ArrayList<Pagamento> getPagamentosFiltrados() {
 		return pagamentosFiltrados;
 	}
@@ -150,5 +158,5 @@ public class PagamentoBean {
 	public void setDesabiltarCamposRegistrarPagamento(boolean desabiltarCamposRegistrarPagamento) {
 		this.desabiltarCamposRegistrarPagamento = desabiltarCamposRegistrarPagamento;
 	}
-	
+
 }

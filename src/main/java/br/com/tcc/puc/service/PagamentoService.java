@@ -60,7 +60,7 @@ public class PagamentoService {
 	public ArrayList<Pagamento> obterPagamentos(Cliente cli) {
 		return pagamentoDao.obterObjeto(cli);
 	}
-	
+
 	/**
 	 * Método que analisa, a partir dos pagamentos efetuados, qual é a próxima data
 	 * de vencimento e o status do cliente
@@ -72,7 +72,7 @@ public class PagamentoService {
 	public Cliente obterInfoFinanceira(Cliente cli) {
 		// Inicialização das variáveis
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Calendar calUltPagamento = Calendar.getInstance();
+		Calendar calVencimento = Calendar.getInstance();
 		Calendar calHoje = Calendar.getInstance();
 		Date dtVencimento;
 
@@ -81,23 +81,23 @@ public class PagamentoService {
 		// Verificar se já houve algum pagamento. Caso não tenha havido, considerar o
 		// cliente como: Pendente 1° parcela
 		if (dtVencimento == null) {
-			cli.setSitCliente("Pendente 1° Pagamento");
+			cli.setSitCliente(Utilidade.getMessage("Pendente1Pagamento", null));
 			return cli;
 		} else {
-			// preenche o cliente com a última data de vencimento
-			cli.setProxDataVencimento(dateFormat.format(dtVencimento));
 			// Ajusta calendário com a data de hoje
 			calHoje.setTime(new Date(System.currentTimeMillis()));
-			// Pega a última data de pagamento
-			calUltPagamento.setTime(obtemUltPagamento(cli).getDtPagamento());
+			// Ajusta calendário com a data de vencimento
+			calVencimento.setTime(dtVencimento);
+			// preenche o cliente com a última data de vencimento
+			cli.setProxDataVencimento(dateFormat.format(dtVencimento));
 			// Verifica o status financeiro do aluno. Se for hoje a data de vencimento ou
 			// superior, o cliente está adimplente
-			if (mesmaData(calHoje, calUltPagamento)
-					|| (calUltPagamento.getTime().after(new Date(System.currentTimeMillis())))) {
-				cli.setSitCliente("Adimplente");
+			if (mesmaData(calHoje, calVencimento)
+					|| (calVencimento.getTime().after(new Date(System.currentTimeMillis())))) {
+				cli.setSitCliente(Utilidade.getMessage("Adimplente", null));
 				// Caso contrário ele está inadimplente
 			} else {
-				cli.setSitCliente("Inadimplente");
+				cli.setSitCliente(Utilidade.getMessage("Inadimplente", null));
 			}
 		}
 		return cli;
@@ -118,12 +118,8 @@ public class PagamentoService {
 		if (ultPagamento != null) {
 			// Seta o dia do último pagamento no calendário
 			calUltPagamento.setTime(ultPagamento.getDtPagamento());
-			// Obtem o plano para saber quando será a data de vencimento.
-			if (cli.getTpPlano().equals("Mensal")) {
-				calUltPagamento.add(Calendar.DATE, 30);
-			} else if (cli.getTpPlano().equals("Anual")) {
-				calUltPagamento.add(Calendar.DATE, 365);
-			}
+			// Soma à data de vencimento o código do plano do cliente.
+			calUltPagamento.add(Calendar.DATE, Integer.parseInt(cli.getTpPlano()));
 			return calUltPagamento.getTime();
 		}
 		return null;

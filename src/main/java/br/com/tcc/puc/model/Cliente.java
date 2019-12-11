@@ -22,6 +22,8 @@ public class Cliente extends Pessoa implements Serializable  {
 	
 	private String tpPlano = null;
 	
+	private String descTpPlano = null;
+	
 	private Date dtMatricula = null;
 	
 	private String sitCliente = null;
@@ -90,6 +92,14 @@ public class Cliente extends Pessoa implements Serializable  {
 
 	public void setProxDataVencimento(String proxDataVencimento) {
 		this.proxDataVencimento = proxDataVencimento;
+	}
+
+	public String getDescTpPlano() {
+		return descTpPlano;
+	}
+
+	public void setDescTpPlano(String descTpPlano) {
+		this.descTpPlano = descTpPlano;
 	}
 	
 }

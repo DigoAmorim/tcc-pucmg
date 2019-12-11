@@ -69,8 +69,8 @@ public class UtilMock {
 	}
 	
 	private void popularTpPlano() {
-		listaTpPlanos.add(new SelectItem("Mensal", "Pagamento Mensal"));
-		listaTpPlanos.add(new SelectItem("Anual", "Pagamento Anual"));
+		listaTpPlanos.add(new SelectItem("30", "Pagamento Mensal"));
+		listaTpPlanos.add(new SelectItem("365", "Pagamento Anual"));
 	}
 
 	public ArrayList<SelectItem> getListaEstados() {
