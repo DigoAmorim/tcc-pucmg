@@ -7,6 +7,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.tcc.puc.exception.PagAnteriorVencException;
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.model.Pagamento;
 import br.com.tcc.puc.service.ClienteService;
@@ -72,7 +73,7 @@ public class PagamentoBean {
 			pagamentoService.criar(pagamento);
 			Utilidade.retornarMensagem(Utilidade.getMessage("pagamentoRegistradoSucesso", null),
 					FacesMessage.SEVERITY_INFO);
-		} catch (IllegalArgumentException e) {
+		} catch (PagAnteriorVencException e) {
 			Utilidade.retornarMensagem(Utilidade.getMessage(e.getMessage(), null), FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
 			System.out.println("Erro precisa ser tratado");

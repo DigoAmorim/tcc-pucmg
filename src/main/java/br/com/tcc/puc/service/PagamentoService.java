@@ -9,11 +9,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
-
-import javax.faces.application.FacesMessage;
 
 import br.com.tcc.puc.dao.MockPagamentoDao;
+import br.com.tcc.puc.exception.PagAnteriorVencException;
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.model.Pagamento;
 import br.com.tcc.puc.util.Utilidade;
@@ -37,7 +35,7 @@ public class PagamentoService {
 		}
 	}
 
-	public void criar(Pagamento pagamento) throws IllegalArgumentException {
+	public void criar(Pagamento pagamento) throws PagAnteriorVencException {
 		Date dtVencimento;
 
 		dtVencimento = obtemProxDataVencimento(pagamento.getCliente());
@@ -50,7 +48,7 @@ public class PagamentoService {
 			calDtVencimento.setTime(dtVencimento);
 			calDtPagamento.setTime(pagamento.getDtPagamento());
 			if (calDtPagamento.before(calDtVencimento)) {
-				throw new IllegalArgumentException("dtPagamentoAnteriorVencimento");
+				throw new PagAnteriorVencException("dtPagamentoAnteriorVencimento");
 			} else {
 				pagamentoDao.adicionarObjeto(pagamento);
 			}
