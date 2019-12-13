@@ -22,6 +22,11 @@ public class ValidadorCPF implements Validator {
 
 	}
 
+	/**
+	 * Método que valida o CPF
+	 * @param strCpf - CPF a ser validado.
+	 * @return Retorna true se o CPF é válido e false se o CPF é inválido.
+	 */
 	private boolean CPF(String strCpf) {
 		strCpf = strCpf.replaceAll("[^0123456789]", "");
 		if (strCpf.equals("")) {

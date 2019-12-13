@@ -16,6 +16,9 @@ public class MockInstrutorDao implements CrudDao<Instrutor> {
 
 	private ArrayList<Instrutor> instrutores = null;
 
+	/**
+	 * Construtor do DAO
+	 */
 	public MockInstrutorDao() {
 		instrutores = new ArrayList<Instrutor>();
 		popularInstrutores();
@@ -100,5 +103,4 @@ public class MockInstrutorDao implements CrudDao<Instrutor> {
 		instrutores.add(i);
 		i.setTpAtividade(new String[] {"Musculação"});
 	}
-
 }

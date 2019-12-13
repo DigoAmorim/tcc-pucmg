@@ -31,6 +31,9 @@ public class ClienteBean {
 	private ClienteService clienteService = null;
 	private UtilidadeService utilService = null;
 
+	/**
+	 * Construtor do bean
+	 */
 	public ClienteBean() {
 		cliente = new Cliente();
 		setDesabiltarCamposAlterarCliente(true);
@@ -201,6 +204,4 @@ public class ClienteBean {
 	public void setDesabiltarCamposAlterarCliente(boolean desabiltarCamposAlterarCliente) {
 		this.desabiltarCamposAlterarCliente = desabiltarCamposAlterarCliente;
 	}
-	
-	
 }

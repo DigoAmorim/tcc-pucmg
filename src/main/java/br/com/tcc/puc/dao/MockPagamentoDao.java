@@ -17,6 +17,9 @@ public class MockPagamentoDao {
 
 	private ArrayList<Pagamento> pagamentos = null;
 
+	/**
+	 * Construtor do DAO
+	 */
 	public MockPagamentoDao() {
 		pagamentos = new ArrayList<Pagamento>();
 

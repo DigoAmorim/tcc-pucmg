@@ -23,6 +23,9 @@ public class UtilMock {
 	
 	private ArrayList<SelectItem> listaTpPlanos = null;
 
+	/**
+	 * Construtor do DAO
+	 */
 	public UtilMock() {
 		listaEstados = new ArrayList<SelectItem>();
 		listaTpAtividades = new ArrayList<SelectItem>();
@@ -33,6 +36,9 @@ public class UtilMock {
 
 	}
 
+	/**
+	 * Método que serve para popular o select item de estado
+	 */
 	private void popularEstados() {
 		listaEstados.add(new SelectItem("AC", "Acre"));
 		listaEstados.add(new SelectItem("AL", "Alagoas"));
@@ -63,16 +69,26 @@ public class UtilMock {
 		listaEstados.add(new SelectItem("TO", "Tocantins"));
 	}
 
+	/**
+	 * Método que popula o select item de tipo de atividade
+	 */
 	private void popularTpAtividades() {
 		listaTpAtividades.add(new SelectItem("Aulas em grupo", "Aulas em grupo"));
 		listaTpAtividades.add(new SelectItem("Musculação", "Musculação"));
 	}
 	
+	/**
+	 * Méotod que popula o select item de tipo de plano
+	 */
 	private void popularTpPlano() {
 		listaTpPlanos.add(new SelectItem("30", "Pagamento Mensal"));
 		listaTpPlanos.add(new SelectItem("365", "Pagamento Anual"));
 	}
 
+	/**
+	 * getters and setters
+	 * 
+	 */
 	public ArrayList<SelectItem> getListaEstados() {
 		return listaEstados;
 	}
@@ -96,7 +112,4 @@ public class UtilMock {
 	public void setListaTpPlanos(ArrayList<SelectItem> listaTpPlanos) {
 		this.listaTpPlanos = listaTpPlanos;
 	}
-	
-	
-
 }

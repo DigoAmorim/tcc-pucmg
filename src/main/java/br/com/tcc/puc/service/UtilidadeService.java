@@ -20,6 +20,10 @@ public class UtilidadeService {
 
 	private UtilMock utilMock = new UtilMock();
 
+	/**
+	 * Método que retornará os estados para serem preenchidos nos select items da tela
+	 * @return Coleção contendo select items de estado a serem apresentado na tela
+	 */
 	public List<SelectItem> obterEstados() {
 		if (ACESSO_DADOS.equals("MOCK")) {
 			return utilMock.getListaEstados();
@@ -27,6 +31,10 @@ public class UtilidadeService {
 		return null;
 	}
 
+	/**
+	 * Método que retornará os tipos de atividades para serem preenchidos nos select items da tela
+	 * @return Coleção contendo select items tipos de atividades a serem apresentado na tela
+	 */
 	public List<SelectItem> obterTpAtividades() {
 		if (ACESSO_DADOS.equals("MOCK")) {
 			return utilMock.getListaTpAtividades();
@@ -34,6 +42,10 @@ public class UtilidadeService {
 		return null;
 	}
 
+	/**
+	 * Método que retornará os tipos de planos para serem preenchidos nos select items da tela
+	 * @return Coleção contendo select items tipos de planos a serem apresentado na tela
+	 */
 	public ArrayList<SelectItem> obterTpPlanos() {
 		if (ACESSO_DADOS.equals("MOCK")) {
 			return utilMock.getListaTpPlanos();
@@ -41,6 +53,11 @@ public class UtilidadeService {
 		return null;
 	}
 
+	/**
+	 * Método que retorna a descrição de um plano com base no código escolhido pelo usuário na tela
+	 * @param tpPlano - Código do plano escolhido pelo usuário na tela.
+	 * @return Retorna uma string contendo a descrição do plano escolhido
+	 */
 	public String obterDescTpPlano(String tpPlano) {
 		if (ACESSO_DADOS.equals("MOCK")) {
 			ArrayList<SelectItem> listaTpPlano;

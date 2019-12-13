@@ -50,5 +50,4 @@ public class Utilidade {
 			contexto.addMessage(null, new FacesMessage(severidade, mensagem, ""));
 		}
 	}
-
 }

@@ -31,6 +31,9 @@ public class InstrutorBean {
 	private InstrutorService instrutorService = null;
 	private UtilidadeService utilService = null;
 
+	/**
+	 * Construtor do Bean
+	 */
 	public InstrutorBean() {
 		instrutor = new Instrutor();
 		setDesabiltarCamposAlterarInstrutor(true);
@@ -192,6 +195,4 @@ public class InstrutorBean {
 	public void setDesabiltarCamposAlterarInstrutor(boolean desabiltarCamposAlterarInstrutor) {
 		this.desabiltarCamposAlterarInstrutor = desabiltarCamposAlterarInstrutor;
 	}
-	
-	
 }

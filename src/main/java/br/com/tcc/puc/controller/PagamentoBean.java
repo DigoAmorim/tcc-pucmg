@@ -33,6 +33,9 @@ public class PagamentoBean {
 	private ClienteService clienteService = null;
 	private PagamentoService pagamentoService = null;
 
+	/**
+	 * Construtor do Bean
+	 */
 	public PagamentoBean() {
 		pagamento = new Pagamento();
 	}
@@ -159,5 +162,4 @@ public class PagamentoBean {
 	public void setDesabiltarCamposRegistrarPagamento(boolean desabiltarCamposRegistrarPagamento) {
 		this.desabiltarCamposRegistrarPagamento = desabiltarCamposRegistrarPagamento;
 	}
-
 }

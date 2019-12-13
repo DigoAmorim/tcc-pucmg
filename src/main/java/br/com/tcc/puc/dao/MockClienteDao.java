@@ -17,6 +17,9 @@ public class MockClienteDao implements CrudDao<Cliente> {
 
 	private ArrayList<Cliente> clientes = null;
 
+	/**
+	 * Construtor do DAO
+	 */
 	public MockClienteDao() {
 		clientes = new ArrayList<Cliente>();
 		popularClientes();
@@ -119,5 +122,4 @@ public class MockClienteDao implements CrudDao<Cliente> {
 		c.setDtMatricula(new Date(System.currentTimeMillis()));
 		clientes.add(c);
 	}
-
 }

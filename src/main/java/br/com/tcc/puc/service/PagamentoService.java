@@ -29,12 +29,21 @@ public class PagamentoService {
 
 	private MockPagamentoDao pagamentoDao;
 
+	/**
+	 * Construtor da Classe
+	 * @param tipoAcesso campo que indicará se o método chamará o Mock ou o banco de dados
+	 */
 	public PagamentoService(String tipoAcesso) {
 		if (tipoAcesso.equals(ACESSO_DADOS)) {
 			pagamentoDao = new MockPagamentoDao();
 		}
 	}
 
+	/**
+	 * Método que criará o pagamento 	
+	 * @param pagamento - Objeto que contém dados do pagamento que será criado
+	 * @throws PagAnteriorVencException - Caso a data do pagamento seja anterior a próxima data de vencimento, essa exceção é levantada
+	 */
 	public void criar(Pagamento pagamento) throws PagAnteriorVencException {
 		Date dtVencimento;
 
@@ -55,6 +64,11 @@ public class PagamentoService {
 		}
 	}
 
+	/**
+	 * Método que retorna todos os pagamentos de um determinado cliente
+	 * @param cli - Objeto que contém os campos que identificam o cliente para o qual os pagamentos serão apresentados.
+	 * @return Retorna a lista de pagamentos de um determinado cliente.
+	 */
 	public ArrayList<Pagamento> obterPagamentos(Cliente cli) {
 		return pagamentoDao.obterObjeto(cli);
 	}
@@ -123,6 +137,11 @@ public class PagamentoService {
 		return null;
 	}
 
+	/**
+	 * Méotodo que retorna o último pagamento para um determinado cliente
+	 * @param cli - Objeto que contém dados do cliente para qual se deja obter o último pagamento.
+	 * @return Retorna o objeto pagamento contem informações do último pagamento feito pelo cliente passado como parâmetro.
+	 */
 	public Pagamento obtemUltPagamento(Cliente cli) {
 		// Inicialização das variáveis
 		ArrayList<Pagamento> pagamentosCliente;

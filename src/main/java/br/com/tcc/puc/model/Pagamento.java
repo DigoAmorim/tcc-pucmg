@@ -20,7 +20,9 @@ public class Pagamento implements Serializable, Comparable<Pagamento> {
 	
 	private Double valorPagamento = null;
 	
-	//Método que ajudará a efetuar a comparação entre os dias de pagamento, para ordená-lo em ordem crescente.
+	/**
+	 * Método que ajudará a efetuar a comparação entre os dias de pagamento, para ordená-lo em ordem crescente.
+	 */
 	public int compareTo(Pagamento o) {
 		long difDias;
 		difDias = ChronoUnit.DAYS.between(this.dtPagamento.toInstant(), o.dtPagamento.toInstant());  
