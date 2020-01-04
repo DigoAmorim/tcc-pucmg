@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+import br.com.tcc.puc.exception.EntidadeDuplicadaException;
 import br.com.tcc.puc.model.Instrutor;
 import br.com.tcc.puc.service.InstrutorService;
 import br.com.tcc.puc.service.UtilidadeService;
@@ -48,6 +49,8 @@ public class InstrutorBean {
 		try {
 			instrutorService.criar(instrutor);
 			Utilidade.retornarMensagem(Utilidade.getMessage("instrutorCadastradoSucesso", null), FacesMessage.SEVERITY_INFO);
+		} catch (EntidadeDuplicadaException e) {
+			Utilidade.retornarMensagem(Utilidade.getMessage("instrutorMesmoCPFCadastrado", null), FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
 			System.out.println("Erro precisa ser tratado");
 		} finally {
@@ -128,7 +131,7 @@ public class InstrutorBean {
 	 */
 	private void instanciarInstrutorService() {
 		if (instrutorService == null) {
-			instrutorService = new InstrutorService("MOCK");
+			instrutorService = new InstrutorService("DB");
 		}
 	}
 

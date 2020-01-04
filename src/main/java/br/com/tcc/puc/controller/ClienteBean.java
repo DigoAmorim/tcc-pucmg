@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+import br.com.tcc.puc.exception.EntidadeDuplicadaException;
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.service.ClienteService;
 import br.com.tcc.puc.service.UtilidadeService;
@@ -48,6 +49,8 @@ public class ClienteBean {
 		try {
 			clienteService.criar(cliente);
 			Utilidade.retornarMensagem(Utilidade.getMessage("clienteCadastradoSucesso", null), FacesMessage.SEVERITY_INFO);
+		} catch (EntidadeDuplicadaException e) {
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteMesmoCPFCadastrado", null), FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
 			System.out.println("Erro precisa ser tratado");
 		} finally {
@@ -132,7 +135,7 @@ public class ClienteBean {
 	 */
 	private void instanciarClienteService() {
 		if (clienteService == null) {
-			clienteService = new ClienteService("MOCK");
+			clienteService = new ClienteService("DB");
 		}
 	}
 

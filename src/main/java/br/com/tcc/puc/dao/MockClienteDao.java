@@ -96,7 +96,6 @@ public class MockClienteDao implements CrudDao<Cliente> {
 		c.setRg("054.052.69-00");
 		c.setCidade("Salvador");
 		c.setTpPlano("30");
-		c.setDescTpPlano("Pagamento Mensal");
 		c.setDtMatricula(new Date(System.currentTimeMillis()));
 		clientes.add(c);
 		c = new Cliente();
@@ -107,7 +106,6 @@ public class MockClienteDao implements CrudDao<Cliente> {
 		c.setRg("876.522.55-00");
 		c.setCidade("Recife");
 		c.setTpPlano("30");
-		c.setDescTpPlano("Pagamento Mensal");
 		c.setDtMatricula(new Date(System.currentTimeMillis()));
 		clientes.add(c);
 		c = new Cliente();
@@ -118,7 +116,6 @@ public class MockClienteDao implements CrudDao<Cliente> {
 		c.setRg("332.001.55-70");
 		c.setCidade("Porto Alegre");
 		c.setTpPlano("365");
-		c.setDescTpPlano("Pagamento Anual");
 		c.setDtMatricula(new Date(System.currentTimeMillis()));
 		clientes.add(c);
 	}

@@ -5,8 +5,10 @@ package br.com.tcc.puc.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import br.com.tcc.puc.dao.CrudDao;
+import br.com.tcc.puc.dao.DBClienteDao;
 import br.com.tcc.puc.dao.MockClienteDao;
 import br.com.tcc.puc.model.Cliente;
 
@@ -19,9 +21,12 @@ import br.com.tcc.puc.model.Cliente;
  */
 public class ClienteService {
 
-	static final String ACESSO_DADOS = "MOCK";
+	static final String ACESSO_MOCK = "MOCK";
+	
+	static final String ACESSO_DB = "DB";
 
 	private UtilidadeService utilidadeService;
+	
 	private CrudDao<Cliente> clienteDao;
 
 	/**
@@ -29,8 +34,10 @@ public class ClienteService {
 	 * @param tipoAcesso campo que indicará se o método chamará o Mock ou o banco de dados
 	 */
 	public ClienteService(String tipoAcesso) {
-		if (tipoAcesso.equals(ACESSO_DADOS)) {
+		if (tipoAcesso.equals(ACESSO_MOCK)) {
 			clienteDao = new MockClienteDao();
+		} else if (tipoAcesso.equals(ACESSO_DB)) { 
+			clienteDao = new DBClienteDao();
 		}
 	}
 
@@ -79,7 +86,19 @@ public class ClienteService {
 	 * @return Retorna a lista de todos os clientes obtidos
 	 */
 	public ArrayList<Cliente> obterTodos() {
-		return clienteDao.obterTodos();
+		
+		ArrayList<Cliente> clientes;
+		Cliente clienteObj;
+		clientes = clienteDao.obterTodos();
+		
+		instanciarUtilidadeService();
+		
+		for (Iterator<Cliente> iterator = clientes.iterator(); iterator.hasNext();) {
+			clienteObj = iterator.next();
+			clienteObj.setDescTpPlano(utilidadeService.obterDescTpPlano(clienteObj.getTpPlano()));
+		}
+		
+		return clientes;
 	}
 
 	/**

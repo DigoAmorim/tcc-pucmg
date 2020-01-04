@@ -73,8 +73,8 @@ public class UtilMock {
 	 * Método que popula o select item de tipo de atividade
 	 */
 	private void popularTpAtividades() {
-		listaTpAtividades.add(new SelectItem("Aulas em grupo", "Aulas em grupo"));
-		listaTpAtividades.add(new SelectItem("Musculação", "Musculação"));
+		listaTpAtividades.add(new SelectItem("01", "Aulas em grupo"));
+		listaTpAtividades.add(new SelectItem("02", "Musculação"));
 	}
 	
 	/**

@@ -35,7 +35,7 @@ public class UtilidadeService {
 	 * Método que retornará os tipos de atividades para serem preenchidos nos select items da tela
 	 * @return Coleção contendo select items tipos de atividades a serem apresentado na tela
 	 */
-	public List<SelectItem> obterTpAtividades() {
+	public ArrayList<SelectItem> obterTpAtividades() {
 		if (ACESSO_DADOS.equals("MOCK")) {
 			return utilMock.getListaTpAtividades();
 		}
@@ -67,6 +67,27 @@ public class UtilidadeService {
 			for (Iterator<SelectItem> iterator = listaTpPlano.iterator(); iterator.hasNext();) {
 				valorSelectItem = iterator.next();
 				if (tpPlano.equals(valorSelectItem.getValue().toString())) {
+					return valorSelectItem.getLabel();
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Método que retorna a descrição de uma atividade com base no código escolhido pelo usuário na tela
+	 * @param tpAtividade - Código da atividade escolhida pelo usuário na tela.
+	 * @return Retorna uma string contendo a descrição da atividade escolhida
+	 */
+	public String obterDescTpAtividade(String tpAtividade) {
+		if (ACESSO_DADOS.equals("MOCK")) {
+			ArrayList<SelectItem> listaTpAtividade;
+			SelectItem valorSelectItem;
+
+			listaTpAtividade = obterTpAtividades();
+			for (Iterator<SelectItem> iterator = listaTpAtividade.iterator(); iterator.hasNext();) {
+				valorSelectItem = iterator.next();
+				if (tpAtividade.equals(valorSelectItem.getValue().toString())) {
 					return valorSelectItem.getLabel();
 				}
 			}
