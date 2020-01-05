@@ -37,6 +37,8 @@ public class DBClienteDao implements CrudDao<Cliente> {
 	public ArrayList<Cliente> obterTodos() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			clientes = (ArrayList<Cliente>) session.createQuery("from Cliente", Cliente.class).list();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,6 +58,8 @@ public class DBClienteDao implements CrudDao<Cliente> {
 			Root<Cliente> root = cr.from(Cliente.class);
 			cr.select(root).where(cb.equal(root.get("cpf"), cli.getCpf()));
 			clienteObj = session.createQuery(cr).getSingleResult();
+			// Fecha a sessão
+			session.close();
 			return clienteObj;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,7 +81,12 @@ public class DBClienteDao implements CrudDao<Cliente> {
 			session.delete(clienteModificado);
 			// Efetua o commit no DB
 			transaction.commit();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
 			e.printStackTrace();
 		}
 	}
@@ -96,7 +105,12 @@ public class DBClienteDao implements CrudDao<Cliente> {
 			session.update(clienteModificado);
 			// Efetua o commit no DB
 			transaction.commit();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
 			e.printStackTrace();
 		}
 	}
@@ -116,12 +130,13 @@ public class DBClienteDao implements CrudDao<Cliente> {
 			session.save(clientesParam);
 			// Efetua o commit no DB
 			transaction.commit();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
-			throw new EntidadeDuplicadaException(e.getMessage());
-		} finally {
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			throw new EntidadeDuplicadaException(e.getMessage());
 		}
 	}
 

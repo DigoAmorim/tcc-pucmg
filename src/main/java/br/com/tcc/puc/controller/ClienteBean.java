@@ -116,18 +116,11 @@ public class ClienteBean {
 	}
 
 	/**
-	 * TODO: Quando inserir o BD, modificar a implementação desse método.
+	 * Método que limpa campos na tela
 	 */
 	private void limparCliente() {
 		cliente = new Cliente();
 		filtroClienteCpf = "";
-//		cliente.setCidade("");
-//		cliente.setCpf("");
-//		cliente.setEndereco("");
-//		cliente.setNome("");
-//		cliente.setNumero(null);
-//		cliente.setRg("");
-//		cliente.setTelefone("");
 	}
 
 	/**

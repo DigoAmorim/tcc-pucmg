@@ -37,6 +37,8 @@ public class DBInstrutorDao implements CrudDao<Instrutor> {
 	public ArrayList<Instrutor> obterTodos() {
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 			instrutores = (ArrayList<Instrutor>) session.createQuery("from Instrutor", Instrutor.class).list();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,6 +58,8 @@ public class DBInstrutorDao implements CrudDao<Instrutor> {
 			Root<Instrutor> root = cr.from(Instrutor.class);
 			cr.select(root).where(cb.equal(root.get("cpf"), inst.getCpf()));
 			instrutorObj = session.createQuery(cr).getSingleResult();
+			// Fecha a sessão
+			session.close();
 			return instrutorObj;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,7 +81,12 @@ public class DBInstrutorDao implements CrudDao<Instrutor> {
 			session.delete(instrutorModificado);
 			// Efetua o commit no DB
 			transaction.commit();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
 			e.printStackTrace();
 		}
 	}
@@ -96,7 +105,12 @@ public class DBInstrutorDao implements CrudDao<Instrutor> {
 			session.update(instrutorModificado);
 			// Efetua o commit no DB
 			transaction.commit();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
 			e.printStackTrace();
 		}
 	}
@@ -116,12 +130,13 @@ public class DBInstrutorDao implements CrudDao<Instrutor> {
 			session.save(instrutoresParam);
 			// Efetua o commit no DB
 			transaction.commit();
+			// Fecha a sessão
+			session.close();
 		} catch (Exception e) {
-			throw new EntidadeDuplicadaException(e.getMessage());
-		} finally {
 			if (transaction != null) {
 				transaction.rollback();
 			}
+			throw new EntidadeDuplicadaException(e.getMessage());
 		}
 	}
 

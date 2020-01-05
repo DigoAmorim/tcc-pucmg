@@ -9,7 +9,7 @@
         <property name="connection.username">admin</property>
         <property name="connection.password">admin</property>
         <!-- JDBC connection pool settings ... using built-in test pool -->
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">10</property>
         <!-- Select our SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <!-- Echo the SQL to stdout -->
@@ -26,5 +26,6 @@
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
         <mapping class="br.com.tcc.puc.model.Cliente" />
         <mapping class="br.com.tcc.puc.model.Instrutor" />
+        <mapping class="br.com.tcc.puc.model.Pagamento" />
     </session-factory>
 </hibernate-configuration>

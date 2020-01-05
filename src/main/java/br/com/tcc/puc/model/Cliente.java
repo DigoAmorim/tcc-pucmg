@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
@@ -48,7 +50,8 @@ public class Cliente extends Pessoa implements Serializable  {
 	@Transient
 	private String descTpPlano = null;
 	
-	@Transient
+	@Column(name = "dt_matricula")
+	@Temporal(TemporalType.DATE)
 	private Date dtMatricula = null;
 	
 	@Transient

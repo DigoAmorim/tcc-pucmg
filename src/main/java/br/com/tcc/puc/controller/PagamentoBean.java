@@ -31,6 +31,7 @@ public class PagamentoBean {
 	private ArrayList<Pagamento> pagamentosFiltrados = new ArrayList<Pagamento>();
 
 	private ClienteService clienteService = null;
+
 	private PagamentoService pagamentoService = null;
 
 	/**
@@ -52,14 +53,14 @@ public class PagamentoBean {
 		Cliparam.setCpf(filtroClienteCpf);
 		instanciarClienteService();
 		pagamento.setCliente(clienteService.obter(Cliparam));
-		instanciarPagamentoService();
-		pagamento.setCliente(pagamentoService.obterInfoFinanceira(pagamento.getCliente()));
-		setDesabiltarCamposRegistrarPagamento(true);
-		if (Objects.isNull(pagamento.getCliente())) {
-			Utilidade.retornarMensagem(Utilidade.getMessage("clienteNaoEncontrado", null), FacesMessage.SEVERITY_WARN);
-		} else {
+		if (!Objects.isNull(pagamento.getCliente())) {
+			instanciarPagamentoService();
+			pagamento.setCliente(pagamentoService.obterInfoFinanceira(pagamento.getCliente()));
+			setDesabiltarCamposRegistrarPagamento(true);
 			setFiltroClienteCpf("");
 			setDesabiltarCamposRegistrarPagamento(false);
+		} else {
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteNaoEncontrado", null), FacesMessage.SEVERITY_WARN);
 		}
 		return "Pagamento";
 	}
@@ -100,7 +101,7 @@ public class PagamentoBean {
 	 */
 	private void instanciarClienteService() {
 		if (clienteService == null) {
-			clienteService = new ClienteService("MOCK");
+			clienteService = new ClienteService("DB");
 		}
 	}
 
@@ -109,7 +110,7 @@ public class PagamentoBean {
 	 */
 	private void instanciarPagamentoService() {
 		if (pagamentoService == null) {
-			pagamentoService = new PagamentoService("MOCK");
+			pagamentoService = new PagamentoService("DB");
 		}
 	}
 

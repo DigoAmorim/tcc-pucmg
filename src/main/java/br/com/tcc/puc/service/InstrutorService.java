@@ -49,7 +49,6 @@ public class InstrutorService {
 	 * @param instrutor - Instrutor a ser criado na aplicação
 	 */
 	public void criar(Instrutor instrutor) {
-
 		instrutor = marcaCheckPeloArray(instrutor);
 		instrutorDao.adicionarObjeto(instrutor);
 	}

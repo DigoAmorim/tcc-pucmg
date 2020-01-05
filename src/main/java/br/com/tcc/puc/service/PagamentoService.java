@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 
+import br.com.tcc.puc.dao.DBClienteDao;
+import br.com.tcc.puc.dao.DBPagamentoDao;
 import br.com.tcc.puc.dao.MockPagamentoDao;
 import br.com.tcc.puc.exception.PagAnteriorVencException;
 import br.com.tcc.puc.model.Cliente;
@@ -27,22 +30,33 @@ public class PagamentoService {
 
 	static final String ACESSO_DADOS = "MOCK";
 
-	private MockPagamentoDao pagamentoDao;
+	static final String ACESSO_DB = "DB";
+	
+	private UtilidadeService utilidadeService;
+
+	private DBPagamentoDao pagamentoDao;
 
 	/**
 	 * Construtor da Classe
-	 * @param tipoAcesso campo que indicará se o método chamará o Mock ou o banco de dados
+	 * 
+	 * @param tipoAcesso campo que indicará se o método chamará o Mock ou o banco de
+	 *                   dados
 	 */
 	public PagamentoService(String tipoAcesso) {
 		if (tipoAcesso.equals(ACESSO_DADOS)) {
-			pagamentoDao = new MockPagamentoDao();
+//			pagamentoDao = new MockPagamentoDao();
+		} else if (tipoAcesso.equals(ACESSO_DB)) {
+			pagamentoDao = new DBPagamentoDao();
 		}
 	}
 
 	/**
-	 * Método que criará o pagamento 	
+	 * Método que criará o pagamento
+	 * 
 	 * @param pagamento - Objeto que contém dados do pagamento que será criado
-	 * @throws PagAnteriorVencException - Caso a data do pagamento seja anterior a próxima data de vencimento, essa exceção é levantada
+	 * @throws PagAnteriorVencException - Caso a data do pagamento seja anterior a
+	 *                                  próxima data de vencimento, essa exceção é
+	 *                                  levantada
 	 */
 	public void criar(Pagamento pagamento) throws PagAnteriorVencException {
 		Date dtVencimento;
@@ -66,7 +80,9 @@ public class PagamentoService {
 
 	/**
 	 * Método que retorna todos os pagamentos de um determinado cliente
-	 * @param cli - Objeto que contém os campos que identificam o cliente para o qual os pagamentos serão apresentados.
+	 * 
+	 * @param cli - Objeto que contém os campos que identificam o cliente para o
+	 *            qual os pagamentos serão apresentados.
 	 * @return Retorna a lista de pagamentos de um determinado cliente.
 	 */
 	public ArrayList<Pagamento> obterPagamentos(Cliente cli) {
@@ -78,8 +94,8 @@ public class PagamentoService {
 	 * de vencimento e o status do cliente
 	 * 
 	 * @param Cli -> Cliente a ser analisado pelo método
-	 * @return Retorna o mesmo objeto com as informações de data de vencimento e
-	 *         status atualizadas.
+	 * @return Retorna o mesmo objeto com as informações de data de vencimento,
+	 *         descriçã do tipo do plano e status atualizadas.
 	 */
 	public Cliente obterInfoFinanceira(Cliente cli) {
 		// Inicialização das variáveis
@@ -88,28 +104,33 @@ public class PagamentoService {
 		Calendar calHoje = Calendar.getInstance();
 		Date dtVencimento;
 
-		// Obtem próxima data de vencimento
-		dtVencimento = obtemProxDataVencimento(cli);
-		// Verificar se já houve algum pagamento. Caso não tenha havido, considerar o
-		// cliente como: Pendente 1° parcela
-		if (dtVencimento == null) {
-			cli.setSitCliente(Utilidade.getMessage("Pendente1Pagamento", null));
-			return cli;
-		} else {
-			// Ajusta calendário com a data de hoje
-			calHoje.setTime(new Date(System.currentTimeMillis()));
-			// Ajusta calendário com a data de vencimento
-			calVencimento.setTime(dtVencimento);
-			// preenche o cliente com a última data de vencimento
-			cli.setProxDataVencimento(dateFormat.format(dtVencimento));
-			// Verifica o status financeiro do aluno. Se for hoje a data de vencimento ou
-			// superior, o cliente está adimplente
-			if (mesmaData(calHoje, calVencimento)
-					|| (calVencimento.getTime().after(new Date(System.currentTimeMillis())))) {
-				cli.setSitCliente(Utilidade.getMessage("Adimplente", null));
-				// Caso contrário ele está inadimplente
+		if (!Objects.isNull(cli)) {
+			// Preenche ainformação do tipo do plano
+			instanciarUtilidadeService();
+			cli.setDescTpPlano(utilidadeService.obterDescTpPlano(cli.getTpPlano()));
+			// Obtem próxima data de vencimento
+			dtVencimento = obtemProxDataVencimento(cli);
+			// Verificar se já houve algum pagamento. Caso não tenha havido, considerar o
+			// cliente como: Pendente 1° parcela
+			if (dtVencimento == null) {
+				cli.setSitCliente(Utilidade.getMessage("Pendente1Pagamento", null));
+				return cli;
 			} else {
-				cli.setSitCliente(Utilidade.getMessage("Inadimplente", null));
+				// Ajusta calendário com a data de hoje
+				calHoje.setTime(new Date(System.currentTimeMillis()));
+				// Ajusta calendário com a data de vencimento
+				calVencimento.setTime(dtVencimento);
+				// preenche o cliente com a última data de vencimento
+				cli.setProxDataVencimento(dateFormat.format(dtVencimento));
+				// Verifica o status financeiro do aluno. Se for hoje a data de vencimento ou
+				// superior, o cliente está adimplente
+				if (mesmaData(calHoje, calVencimento)
+						|| (calVencimento.getTime().after(new Date(System.currentTimeMillis())))) {
+					cli.setSitCliente(Utilidade.getMessage("Adimplente", null));
+					// Caso contrário ele está inadimplente
+				} else {
+					cli.setSitCliente(Utilidade.getMessage("Inadimplente", null));
+				}
 			}
 		}
 		return cli;
@@ -139,8 +160,11 @@ public class PagamentoService {
 
 	/**
 	 * Méotodo que retorna o último pagamento para um determinado cliente
-	 * @param cli - Objeto que contém dados do cliente para qual se deja obter o último pagamento.
-	 * @return Retorna o objeto pagamento contem informações do último pagamento feito pelo cliente passado como parâmetro.
+	 * 
+	 * @param cli - Objeto que contém dados do cliente para qual se deja obter o
+	 *            último pagamento.
+	 * @return Retorna o objeto pagamento contem informações do último pagamento
+	 *         feito pelo cliente passado como parâmetro.
 	 */
 	public Pagamento obtemUltPagamento(Cliente cli) {
 		// Inicialização das variáveis
@@ -149,8 +173,8 @@ public class PagamentoService {
 		// Obtem os pagamentos efetuado pelo cliente
 		pagamentosCliente = obterPagamentos(cli);
 		if (!pagamentosCliente.isEmpty()) {
-			// Ordena os pagamentos por ordem decrescente
-			Collections.sort(pagamentosCliente);
+			// Não ordenamos mais pois a ordenação está sendo feita no BD.
+			//Collections.sort(pagamentosCliente);
 			// Pega o último pagamento efetuado
 			return pagamentosCliente.get(0);
 		}
@@ -168,6 +192,15 @@ public class PagamentoService {
 	private boolean mesmaData(Calendar c1, Calendar c2) {
 		return (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH)
 				&& c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH));
+	}
+	
+	/**
+	 * Méotodo para instanciar o serviço de utilidades da aplicação.
+	 */
+	private void instanciarUtilidadeService() {
+		if (utilidadeService == null) {
+			utilidadeService = new UtilidadeService();
+		}
 	}
 
 	public ArrayList<Pagamento> obterTodos() {

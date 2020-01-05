@@ -2,6 +2,18 @@ package br.com.tcc.puc.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -9,14 +21,26 @@ import java.time.temporal.ChronoUnit;
  * @author Rodrigo
  *  
  */
+@Entity
+@Table(name = "pagamento")
 public class Pagamento implements Serializable, Comparable<Pagamento> {
 
 	private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_pagamento")
+	private int pagamentoId;
+	
+    @ManyToOne
+    @JoinColumn(name="cpf_cliente", nullable=false)
 	private Cliente cliente = null;
 	
+	@Column(name = "dt_pagamento")
+	@Temporal(TemporalType.DATE)
 	private Date dtPagamento = null;
 	
+	@Column(name = "vlr_pagamento")
 	private Double valorPagamento = null;
 	
 	/**
@@ -52,4 +76,12 @@ public class Pagamento implements Serializable, Comparable<Pagamento> {
 		this.valorPagamento = valorPagamento;
 	}
 
+	public int getPagamentoId() {
+		return pagamentoId;
+	}
+
+	public void setPagamentoId(int pagamentoId) {
+		this.pagamentoId = pagamentoId;
+	}
+	
 }
