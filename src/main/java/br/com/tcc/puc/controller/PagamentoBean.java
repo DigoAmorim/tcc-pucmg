@@ -163,4 +163,20 @@ public class PagamentoBean {
 	public void setDesabiltarCamposRegistrarPagamento(boolean desabiltarCamposRegistrarPagamento) {
 		this.desabiltarCamposRegistrarPagamento = desabiltarCamposRegistrarPagamento;
 	}
+	
+	/**
+	 * Método que limpa os campos da tela.
+	 * @return
+	 */
+	public String getLimparPagamento() {
+		pagamento = new Pagamento();
+		return null;
+	}
+	
+	/**
+	 * Método que limpa os campos da tela.
+	 * @return
+	 */
+	public void setLimparPagamento() {
+	}
 }

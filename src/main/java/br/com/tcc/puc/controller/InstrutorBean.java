@@ -198,4 +198,20 @@ public class InstrutorBean {
 	public void setDesabiltarCamposAlterarInstrutor(boolean desabiltarCamposAlterarInstrutor) {
 		this.desabiltarCamposAlterarInstrutor = desabiltarCamposAlterarInstrutor;
 	}
+	
+	/**
+	 * Método que limpa os campos da tela.
+	 * @return
+	 */
+	public String getLimparInstrutor() {
+		instrutor = new Instrutor();
+		return null;
+	}
+	
+	/**
+	 * Método que limpa os campos da tela.
+	 * @return
+	 */
+	public void setLimparInstrutor() {
+	}
 }

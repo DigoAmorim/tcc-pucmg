@@ -10,6 +10,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 import br.com.tcc.puc.exception.EntidadeDuplicadaException;
+import br.com.tcc.puc.exception.PlanoAtivoException;
+import br.com.tcc.puc.exception.PossuiPagamentoException;
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.service.ClienteService;
 import br.com.tcc.puc.service.UtilidadeService;
@@ -19,6 +21,7 @@ import br.com.tcc.puc.util.Utilidade;
 @SessionScoped
 /**
  * Bean responsável pelo controle das telas de manipulação dos clientes.
+ * 
  * @author Rodrigo
  *
  */
@@ -36,21 +39,24 @@ public class ClienteBean {
 	 * Construtor do bean
 	 */
 	public ClienteBean() {
-		cliente = new Cliente();
 		setDesabiltarCamposAlterarCliente(true);
 	}
-
+	
 	/**
 	 * Método acionado no momento em que o usuário grava a criação de um cliente
-	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 * 
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se
+	 *         manterá na mesma página.
 	 */
 	public String cadastrarCliente() {
 		instanciarClienteService();
 		try {
 			clienteService.criar(cliente);
-			Utilidade.retornarMensagem(Utilidade.getMessage("clienteCadastradoSucesso", null), FacesMessage.SEVERITY_INFO);
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteCadastradoSucesso", null),
+					FacesMessage.SEVERITY_INFO);
 		} catch (EntidadeDuplicadaException e) {
-			Utilidade.retornarMensagem(Utilidade.getMessage("clienteMesmoCPFCadastrado", null), FacesMessage.SEVERITY_ERROR);
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteMesmoCPFCadastrado", null),
+					FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
 			System.out.println("Erro precisa ser tratado");
 		} finally {
@@ -59,16 +65,22 @@ public class ClienteBean {
 		}
 		return "Cliente";
 	}
-	
+
 	/**
-	 * Método acionado no momento em que o usuário altera qualquer informação de um cliente
-	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 * Método acionado no momento em que o usuário altera qualquer informação de um
+	 * cliente
+	 * 
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se
+	 *         manterá na mesma página.
 	 */
 	public String alterarCliente() {
 		instanciarClienteService();
 		try {
 			clienteService.editar(cliente);
-			Utilidade.retornarMensagem(Utilidade.getMessage("clienteAlteradoSucesso", null), FacesMessage.SEVERITY_INFO);
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteAlteradoSucesso", null),
+					FacesMessage.SEVERITY_INFO);
+		} catch (PlanoAtivoException e) {
+			Utilidade.retornarMensagem(Utilidade.getMessage(e.getMessage(), null), FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
 			System.out.println("Erro precisa ser tratado");
 		} finally {
@@ -77,16 +89,21 @@ public class ClienteBean {
 		}
 		return "Cliente";
 	}
-	
+
 	/**
 	 * Método acionado no momento em que o usuário remove um cliente
-	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 * 
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se
+	 *         manterá na mesma página.
 	 */
 	public String excluirCliente() {
 		instanciarClienteService();
 		try {
 			clienteService.remover(cliente);
-			Utilidade.retornarMensagem(Utilidade.getMessage("clienteExcluidoSucesso", null), FacesMessage.SEVERITY_INFO);
+			Utilidade.retornarMensagem(Utilidade.getMessage("clienteExcluidoSucesso", null),
+					FacesMessage.SEVERITY_INFO);
+		} catch (PossuiPagamentoException e) {
+			Utilidade.retornarMensagem(Utilidade.getMessage(e.getMessage(), null), FacesMessage.SEVERITY_ERROR);
 		} catch (Exception e) {
 			System.out.println("Deu erro");
 		} finally {
@@ -97,8 +114,11 @@ public class ClienteBean {
 	}
 
 	/**
-	 * Na tela de alteração, uma das funcionalidade é obter o cliente pelo identificador, que no caso é o CPF.
-	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se manterá na mesma página.
+	 * Na tela de alteração, uma das funcionalidade é obter o cliente pelo
+	 * identificador, que no caso é o CPF.
+	 * 
+	 * @return Retorna a página que deverá manter no view. No exemplo em questão, se
+	 *         manterá na mesma página.
 	 */
 	public String obterClientePorCpf() {
 		Cliente Cliparam = new Cliente();
@@ -155,7 +175,7 @@ public class ClienteBean {
 		instanciarUtilidadeService();
 		return utilService.obterEstados();
 	}
-	
+
 	public List<SelectItem> getListaTpPlanos() {
 		instanciarUtilidadeService();
 		return utilService.obterTpPlanos();
@@ -200,4 +220,21 @@ public class ClienteBean {
 	public void setDesabiltarCamposAlterarCliente(boolean desabiltarCamposAlterarCliente) {
 		this.desabiltarCamposAlterarCliente = desabiltarCamposAlterarCliente;
 	}
+	
+	/**
+	 * Método que limpa os campos da tela.
+	 * @return
+	 */
+	public String getLimparCliente() {
+		cliente = new Cliente();
+		return null;
+	}
+	
+	/**
+	 * Método que limpa os campos da tela.
+	 * @return
+	 */
+	public void setLimparCliente() {
+	}
+	
 }

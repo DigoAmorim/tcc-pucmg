@@ -7,13 +7,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Objects;
 
-import br.com.tcc.puc.dao.DBClienteDao;
 import br.com.tcc.puc.dao.DBPagamentoDao;
-import br.com.tcc.puc.dao.MockPagamentoDao;
 import br.com.tcc.puc.exception.PagAnteriorVencException;
 import br.com.tcc.puc.model.Cliente;
 import br.com.tcc.puc.model.Pagamento;
