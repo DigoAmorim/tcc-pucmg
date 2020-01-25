@@ -75,7 +75,7 @@
 							layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
 							<p:outputLabel for="dtPagamento" value="#{msg.dtPagamento}:" />
 							<p:calendar id="dtPagamento" locale="pt_BR" required="true"
-								disabled="#{pagamentoBean.desabiltarCamposRegistrarPagamento}"
+								disabled="#{pagamentoBean.desabiltarCamposRegistrarPagamento}" pattern="dd/MM/yyyy"
 								requiredMessage="#{msg.campo} #{msg.dtPagamento} #{msg.obrigatorio}."
 								value="#{pagamentoBean.pagamento.dtPagamento}" showOn="button" />
 							<p:outputLabel for="vlrPagamento" value="#{msg.vlrPagamento}:" />
