@@ -102,7 +102,7 @@ public class PagamentoService {
 		Date dtVencimento;
 
 		if (!Objects.isNull(cli)) {
-			// Preenche ainformação do tipo do plano
+			// Preenche a informação do tipo do plano
 			instanciarUtilidadeService();
 			cli.setDescTpPlano(utilidadeService.obterDescTpPlano(cli.getTpPlano()));
 			// Obtem próxima data de vencimento

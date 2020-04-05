@@ -223,7 +223,7 @@ public class ClienteBean {
 	
 	/**
 	 * Método que limpa os campos da tela.
-	 * @return
+	 * @return null
 	 */
 	public String getLimparCliente() {
 		cliente = new Cliente();
@@ -232,7 +232,7 @@ public class ClienteBean {
 	
 	/**
 	 * Método que limpa os campos da tela.
-	 * @return
+	 * @return void
 	 */
 	public void setLimparCliente() {
 	}

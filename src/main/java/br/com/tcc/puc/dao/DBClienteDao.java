@@ -58,7 +58,7 @@ public class DBClienteDao implements CrudDao<Cliente> {
 			Root<Cliente> root = cr.from(Cliente.class);
 			cr.select(root).where(cb.equal(root.get("cpf"), cli.getCpf()));
 			clienteObj = session.createQuery(cr).getSingleResult();
-			// Fecha a sessão
+			// Fecha a sessão com o BD
 			session.close();
 			return clienteObj;
 		} catch (Exception e) {
@@ -105,7 +105,7 @@ public class DBClienteDao implements CrudDao<Cliente> {
 			session.update(clienteModificado);
 			// Efetua o commit no DB
 			transaction.commit();
-			// Fecha a sessão
+			// Fecha a sessão com o BD
 			session.close();
 		} catch (Exception e) {
 			if (transaction != null) {

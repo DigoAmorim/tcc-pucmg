@@ -89,7 +89,7 @@ public class PagamentoBean {
 	}
 
 	/**
-	 * TODO: Quando inserir o BD, modificar a implementação desse método.
+	 * Método para limpar o pagamento
 	 */
 	private void limparPagamento() {
 		pagamento = new Pagamento();

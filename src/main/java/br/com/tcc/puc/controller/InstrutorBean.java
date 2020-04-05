@@ -116,7 +116,7 @@ public class InstrutorBean {
 	}
 
 	/**
-	 * TODO: Quando inserir o BD, modificar a implementação desse método.
+	 * Método que serve para limpar o instrutor
 	 */
 	private void limparInstrutor() {
 		instrutor = new Instrutor();
